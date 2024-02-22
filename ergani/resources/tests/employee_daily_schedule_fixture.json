@@ -1,0 +1,20 @@
+{
+  "f_afm": "123456789",
+  "f_eponymo": "ΕργαζόμενοςΕπώνυμο",
+  "f_onoma": "ΕργαζόμενοςΌνομα",
+  "f_date": "28/11/2014",
+  "ErgazomenosAnalytics": {
+    "ErgazomenosWTOAnalytics": [
+      {
+        "f_type": "ΤΗΛ",
+        "f_from": "12:00",
+        "f_to": "16:00"
+      },
+      {
+        "f_type": "ΕΡΓ",
+        "f_from": "08:00",
+        "f_to": "16:00"
+      }
+    ]
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "f_aa_pararthmatos": 1,
+  "f_rel_protocol": "123456",
+  "f_rel_date": "2014-11-28",
+  "f_comments": "Some comments",
+  "f_from_date": "2014-11-28",
+  "f_to_date": "2014-11-28",
+  "Ergazomenoi": {
+    "ErgazomenoiWTO": [
+      {
+        "f_afm": "123456789",
+        "f_eponymo": "Doe",
+        "f_onoma": "John",
+        "f_day": "Fri",
+        "ErgazomenosAnalytics": {
+          "ErgazomenosWTOAnalytics": [
+            {
+              "f_type": "ΤΗΛ",
+              "f_from": "12:00",
+              "f_to": "16:00"
+            },
+            {
+              "f_type": "ΕΡΓ",
+              "f_from": "08:00",
+              "f_to": "16:00"
+            }
+          ]
+        }
+      },
+      {
+        "f_afm": "987654321",
+        "f_eponymo": "Doe",
+        "f_onoma": "Jane",
+        "f_day": "Fri",
+        "ErgazomenosAnalytics": {
+          "ErgazomenosWTOAnalytics": [
+            {
+              "f_type": "ΤΗΛ",
+              "f_from": "12:00",
+              "f_to": "16:00"
+            },
+            {
+              "f_type": "ΕΡΓ",
+              "f_from": "08:00",
+              "f_to": "16:00"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

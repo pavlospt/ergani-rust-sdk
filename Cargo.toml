@@ -1,0 +1,15 @@
+[package]
+name = "ergani-rust-sdk"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+ergani = { path = "ergani" }
+anyhow = "1.0.80"
+tokio = { version = "1.36.0", features = ["full"] }
+chrono = "0.4.34"
+
+[workspace]
+members = ["ergani"]
