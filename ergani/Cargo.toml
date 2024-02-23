@@ -1,9 +1,14 @@
 [package]
 name = "ergani"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 license = "MIT"
 description = "Rust SDK for the Greek government Ergani API for employee workflows"
+readme = "../README.md"
+homepage = "https://github.com/pavlospt/ergani-rust-sdk"
+repository = "https://github.com/pavlospt/ergani-rust-sdk"
+keywords = ["ergani", "api", "sdk", "rust"]
+documentation = "https://docs.rs/ergani"
 
 [dependencies]
 thiserror = "1.0.57"
