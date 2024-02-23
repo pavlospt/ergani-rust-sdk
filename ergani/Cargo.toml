@@ -3,6 +3,7 @@ name = "ergani"
 version = "0.1.0"
 edition = "2021"
 license = "MIT"
+description = "Rust SDK for the Greek government Ergani API for employee workflows"
 
 [dependencies]
 thiserror = "1.0.57"
