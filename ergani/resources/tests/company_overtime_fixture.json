@@ -1,0 +1,34 @@
+{
+  "f_aa_pararthmatos": 1,
+  "f_ypiresia_sepe": "123456",
+  "f_kad_kyria": "1234",
+  "f_kad_pararthmatos": "1234",
+  "f_kallikratis_pararthmatos": "1234",
+  "f_afm_proswpoy": "123456789",
+  "f_rel_protocol": "123456",
+  "f_rel_date": "01/01/2021",
+  "f_ergodotikh_organwsh": "",
+  "f_kad_deyt_1": "",
+  "f_kad_deyt_2": "",
+  "f_kad_deyt_3": "",
+  "f_kad_deyt_4": "",
+  "f_comments": "",
+  "Ergazomenoi": {
+    "OvertimeErgazomenosDate": [
+      {
+        "f_afm": "123456789",
+        "f_amka": "12345678901",
+        "f_eponymo": "ΠΑΠΑΔΟΠΟΥΛΟΣ",
+        "f_onoma": "ΓΕΩΡΓΙΟΣ",
+        "f_date": "01/01/2021",
+        "f_from": "12:00",
+        "f_to": "12:00",
+        "f_cancellation": "Ο",
+        "f_step": "1234",
+        "f_reason": "001",
+        "f_weekdates": "5",
+        "f_asee": "123456"
+      }
+    ]
+  }
+}
