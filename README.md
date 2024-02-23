@@ -3,6 +3,7 @@
 `ergani` is a Rust SDK for interacting with the API
 of [Ergani](https://www.gov.gr/en/ipiresies/ergasia-kai-asphalise/apozemioseis-kai-parokhes/prosopopoiemene-plerophorese-misthotou-ergane).
 
+# Attributions
 Ergani Rust SDK is a Rust flavour of the relevant [Ergani Python SDK](https://github.com/withlogicco/ergani-python-sdk)
 built by [WITHLOGICO](https://withlogic.co/).
 
