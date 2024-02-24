@@ -238,10 +238,7 @@ impl ErganiClient {
             Ok(Some(response))
         } else {
             let original_error = response.error_for_status_ref().unwrap_err();
-            let error_text = response.text().await?.to_string();
-            let ergani_error = ErganiError {
-                message: error_text,
-            };
+            let ergani_error = response.json::<ErganiError>().await?;
             bail!(APIError::General(original_error, ergani_error))
         }
     }
