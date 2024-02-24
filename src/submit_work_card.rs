@@ -9,24 +9,26 @@ use ergani::models::work_card_builder::WorkCardBuilder;
 pub(crate) async fn submit_work_card(
     ergani_client: &ErganiClient,
 ) -> Result<Vec<SubmissionResponse>> {
-    let work_card = vec![
-        CompanyWorkCardBuilder::builder()
-            .set_employer_tax_identification_number("0123456789".to_string())
-            .set_business_branch_number(12)
-            .set_comments(Some("Σχόλia".to_string()))
-            .set_card_details(vec![
-                WorkCardBuilder::builder()
-                    .set_employee_tax_identification_number("0123456789".to_string())
-                    .set_employee_last_name("Last".to_string())
-                    .set_employee_first_name("First".to_string())
-                    .set_work_card_movement_type(WorkCardMovementType::Arrival)
-                    .set_work_card_submission_date(NaiveDate::parse_from_str("2021-01-01", "%Y-%m-%d").unwrap())
-                    .set_work_card_movement_datetime(DateTime::parse_from_str("2021-01-01T12:00", "%Y-%m-%dT%H:%M").unwrap().to_utc())
-                    .set_late_declaration_justification(Some(LateDeclarationJustificationType::PowerOutage))
-                    .build()?
-            ])
-            .build()
-    ];
+    let work_card = vec![CompanyWorkCardBuilder::builder()
+        .set_employer_tax_identification_number("0123456789")
+        .set_business_branch_number(12)
+        .set_comments(Some("Σχόλια"))
+        .set_card_details(vec![WorkCardBuilder::builder()
+            .set_employee_tax_identification_number("0123456789")
+            .set_employee_last_name("Last")
+            .set_employee_first_name("First")
+            .set_work_card_movement_type(WorkCardMovementType::Arrival)
+            .set_work_card_submission_date(
+                NaiveDate::parse_from_str("2021-01-01", "%Y-%m-%d").unwrap(),
+            )
+            .set_work_card_movement_datetime(
+                DateTime::parse_from_str("2021-01-01T12:00", "%Y-%m-%dT%H:%M")
+                    .unwrap()
+                    .to_utc(),
+            )
+            .set_late_declaration_justification(Some(LateDeclarationJustificationType::PowerOutage))
+            .build()?])
+        .build()];
 
     let response = ergani_client.submit_work_card(work_card).await?;
 

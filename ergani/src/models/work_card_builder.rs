@@ -41,18 +41,18 @@ impl WorkCardBuilder {
 
     pub fn set_employee_tax_identification_number(
         mut self,
-        employee_tax_identification_number: String,
+        employee_tax_identification_number: impl Into<String>,
     ) -> Self {
-        self.employee_tax_identification_number = employee_tax_identification_number;
+        self.employee_tax_identification_number = employee_tax_identification_number.into();
         self
     }
 
-    pub fn set_employee_last_name(mut self, employee_last_name: String) -> Self {
-        self.employee_last_name = employee_last_name;
+    pub fn set_employee_last_name(mut self, employee_last_name: impl Into<String>) -> Self {
+        self.employee_last_name = employee_last_name.into();
         self
     }
-    pub fn set_employee_first_name(mut self, employee_first_name: String) -> Self {
-        self.employee_first_name = employee_first_name;
+    pub fn set_employee_first_name(mut self, employee_first_name: impl Into<String>) -> Self {
+        self.employee_first_name = employee_first_name.into();
         self
     }
 
@@ -95,9 +95,9 @@ mod tests {
         let dt = date_time.parse::<DateTime<Utc>>().unwrap();
 
         let work_card = WorkCardBuilder::builder()
-            .set_employee_tax_identification_number("123456789".to_string())
-            .set_employee_last_name("ΠΑΠΑΔΟΠΟΥΛΟΣ".to_string())
-            .set_employee_first_name("ΓΕΩΡΓΙΟΣ".to_string())
+            .set_employee_tax_identification_number("123456789")
+            .set_employee_last_name("ΠΑΠΑΔΟΠΟΥΛΟΣ")
+            .set_employee_first_name("ΓΕΩΡΓΙΟΣ")
             .set_work_card_submission_date(NaiveDate::from_ymd_opt(2014, 11, 28).unwrap())
             .set_work_card_movement_datetime(dt)
             .set_late_declaration_justification(Some(LateDeclarationJustificationType::PowerOutage))
@@ -112,9 +112,9 @@ mod tests {
         let dt = date_time.parse::<DateTime<Utc>>().unwrap();
 
         let work_card = WorkCardBuilder::builder()
-            .set_employee_tax_identification_number("123456789".to_string())
-            .set_employee_last_name("ΠΑΠΑΔΟΠΟΥΛΟΣ".to_string())
-            .set_employee_first_name("ΓΕΩΡΓΙΟΣ".to_string())
+            .set_employee_tax_identification_number("123456789")
+            .set_employee_last_name("ΠΑΠΑΔΟΠΟΥΛΟΣ")
+            .set_employee_first_name("ΓΕΩΡΓΙΟΣ")
             .set_work_card_submission_date(NaiveDate::from_ymd_opt(2014, 11, 28).unwrap())
             .set_work_card_movement_datetime(dt)
             .set_late_declaration_justification(Some(LateDeclarationJustificationType::PowerOutage))

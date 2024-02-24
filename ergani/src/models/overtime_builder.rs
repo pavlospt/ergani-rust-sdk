@@ -51,24 +51,24 @@ impl OvertimeBuilder {
 
     pub fn set_employee_tax_identification_number(
         mut self,
-        employee_tax_identification_number: String,
+        employee_tax_identification_number: impl Into<String>,
     ) -> Self {
-        self.employee_tax_identification_number = employee_tax_identification_number;
+        self.employee_tax_identification_number = employee_tax_identification_number.into();
         self
     }
     pub fn set_employee_social_security_number(
         mut self,
-        employee_social_security_number: String,
+        employee_social_security_number: impl Into<String>,
     ) -> Self {
-        self.employee_social_security_number = employee_social_security_number;
+        self.employee_social_security_number = employee_social_security_number.into();
         self
     }
-    pub fn set_employee_last_name(mut self, employee_last_name: String) -> Self {
-        self.employee_last_name = employee_last_name;
+    pub fn set_employee_last_name(mut self, employee_last_name: impl Into<String>) -> Self {
+        self.employee_last_name = employee_last_name.into();
         self
     }
-    pub fn set_employee_first_name(mut self, employee_first_name: String) -> Self {
-        self.employee_first_name = employee_first_name;
+    pub fn set_employee_first_name(mut self, employee_first_name: impl Into<String>) -> Self {
+        self.employee_first_name = employee_first_name.into();
         self
     }
     pub fn set_overtime_date(mut self, overtime_date: NaiveDate) -> Self {
@@ -87,8 +87,11 @@ impl OvertimeBuilder {
         self.overtime_cancellation = overtime_cancellation;
         self
     }
-    pub fn set_employee_profession_code(mut self, employee_profession_code: String) -> Self {
-        self.employee_profession_code = employee_profession_code;
+    pub fn set_employee_profession_code(
+        mut self,
+        employee_profession_code: impl Into<String>,
+    ) -> Self {
+        self.employee_profession_code = employee_profession_code.into();
         self
     }
     pub fn set_overtime_justification(
@@ -102,8 +105,8 @@ impl OvertimeBuilder {
         self.weekly_workdays_number = weekly_workdays_number;
         self
     }
-    pub fn set_asee_approval(mut self, asee_approval: Option<String>) -> Self {
-        self.asee_approval = asee_approval;
+    pub fn set_asee_approval(mut self, asee_approval: Option<impl Into<String>>) -> Self {
+        self.asee_approval = asee_approval.map(|a| a.into());
         self
     }
 }
@@ -123,17 +126,17 @@ mod tests {
         let dt_end = date_time_end_text.parse::<DateTime<Utc>>().unwrap();
 
         let overtime = OvertimeBuilder::builder()
-            .set_employee_tax_identification_number("123456789".to_string())
-            .set_employee_social_security_number("12345678901".to_string())
-            .set_employee_last_name("ΠΑΠΑΔΟΠΟΥΛΟΣ".to_string())
-            .set_employee_first_name("ΓΕΩΡΓΙΟΣ".to_string())
+            .set_employee_tax_identification_number("123456789")
+            .set_employee_social_security_number("12345678901")
+            .set_employee_last_name("ΠΑΠΑΔΟΠΟΥΛΟΣ")
+            .set_employee_first_name("ΓΕΩΡΓΙΟΣ")
             .set_overtime_date(NaiveDate::from_ymd_opt(2021, 1, 1).unwrap())
             .set_overtime_start_time(dt_start)
             .set_overtime_end_time(dt_end)
             .set_overtime_cancellation(false)
-            .set_employee_profession_code("1234".to_string())
+            .set_employee_profession_code("1234")
             .set_weekly_workdays_number(WeeklyWorkDays::Five)
-            .set_asee_approval(Some("123456".to_string()))
+            .set_asee_approval(Some("123456"))
             .build();
 
         assert!(overtime.is_err());
@@ -148,17 +151,17 @@ mod tests {
         let dt_end = date_time_end_text.parse::<DateTime<Utc>>().unwrap();
 
         let overtime = OvertimeBuilder::builder()
-            .set_employee_tax_identification_number("123456789".to_string())
-            .set_employee_social_security_number("12345678901".to_string())
-            .set_employee_last_name("ΠΑΠΑΔΟΠΟΥΛΟΣ".to_string())
-            .set_employee_first_name("ΓΕΩΡΓΙΟΣ".to_string())
+            .set_employee_tax_identification_number("123456789")
+            .set_employee_social_security_number("12345678901")
+            .set_employee_last_name("ΠΑΠΑΔΟΠΟΥΛΟΣ")
+            .set_employee_first_name("ΓΕΩΡΓΙΟΣ")
             .set_overtime_date(NaiveDate::from_ymd_opt(2021, 1, 1).unwrap())
             .set_overtime_start_time(dt_start)
             .set_overtime_end_time(dt_end)
             .set_overtime_cancellation(false)
-            .set_employee_profession_code("1234".to_string())
+            .set_employee_profession_code("1234")
             .set_weekly_workdays_number(WeeklyWorkDays::Five)
-            .set_asee_approval(Some("123456".to_string()))
+            .set_asee_approval(Some("123456"))
             .set_overtime_justification(
                 OvertimeJustificationType::AccidentPreventionOrDamageRestoration,
             )

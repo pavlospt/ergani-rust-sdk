@@ -51,16 +51,19 @@ impl CompanyDailyScheduleBuilder {
         self.employee_schedules = employee_schedules;
         self
     }
-    pub fn set_related_protocol_id(mut self, related_protocol_id: Option<String>) -> Self {
-        self.related_protocol_id = related_protocol_id;
+    pub fn set_related_protocol_id(
+        mut self,
+        related_protocol_id: Option<impl Into<String>>,
+    ) -> Self {
+        self.related_protocol_id = related_protocol_id.map(|s| s.into());
         self
     }
     pub fn set_related_protocol_date(mut self, related_protocol_date: Option<NaiveDate>) -> Self {
         self.related_protocol_date = related_protocol_date;
         self
     }
-    pub fn set_comments(mut self, comments: Option<String>) -> Self {
-        self.comments = comments;
+    pub fn set_comments(mut self, comments: Option<impl Into<String>>) -> Self {
+        self.comments = comments.map(|s| s.into());
         self
     }
 }

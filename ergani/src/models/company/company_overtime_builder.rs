@@ -51,82 +51,95 @@ impl CompanyOvertimeBuilder {
         self.business_branch_number = business_branch_number;
         self
     }
-    pub fn set_sepe_service_code(mut self, sepe_service_code: String) -> Self {
-        self.sepe_service_code = sepe_service_code;
+    pub fn set_sepe_service_code(mut self, sepe_service_code: impl Into<String>) -> Self {
+        self.sepe_service_code = sepe_service_code.into();
         self
     }
     pub fn set_business_primary_activity_code(
         mut self,
-        business_primary_activity_code: String,
+        business_primary_activity_code: impl Into<String>,
     ) -> Self {
-        self.business_primary_activity_code = business_primary_activity_code;
+        self.business_primary_activity_code = business_primary_activity_code.into();
         self
     }
     pub fn set_business_branch_activity_code(
         mut self,
-        business_branch_activity_code: String,
+        business_branch_activity_code: impl Into<String>,
     ) -> Self {
-        self.business_branch_activity_code = business_branch_activity_code;
+        self.business_branch_activity_code = business_branch_activity_code.into();
         self
     }
-    pub fn set_kallikratis_municipal_code(mut self, kallikratis_municipal_code: String) -> Self {
-        self.kallikratis_municipal_code = kallikratis_municipal_code;
+    pub fn set_kallikratis_municipal_code(
+        mut self,
+        kallikratis_municipal_code: impl Into<String>,
+    ) -> Self {
+        self.kallikratis_municipal_code = kallikratis_municipal_code.into();
         self
     }
     pub fn set_legal_representative_tax_identification_number(
         mut self,
-        legal_representative_tax_identification_number: String,
+        legal_representative_tax_identification_number: impl Into<String>,
     ) -> Self {
         self.legal_representative_tax_identification_number =
-            legal_representative_tax_identification_number;
+            legal_representative_tax_identification_number.into();
         self
     }
     pub fn set_employee_overtimes(mut self, employee_overtimes: Vec<Overtime>) -> Self {
         self.employee_overtimes = employee_overtimes;
         self
     }
-    pub fn set_related_protocol_id(mut self, related_protocol_id: Option<String>) -> Self {
-        self.related_protocol_id = related_protocol_id;
+    pub fn set_related_protocol_id(
+        mut self,
+        related_protocol_id: Option<impl Into<String>>,
+    ) -> Self {
+        self.related_protocol_id = related_protocol_id.map(|s| s.into());
         self
     }
     pub fn set_related_protocol_date(mut self, related_protocol_date: Option<NaiveDate>) -> Self {
         self.related_protocol_date = related_protocol_date;
         self
     }
-    pub fn set_employer_organization(mut self, employer_organization: Option<String>) -> Self {
-        self.employer_organization = employer_organization;
+    pub fn set_employer_organization(
+        mut self,
+        employer_organization: Option<impl Into<String>>,
+    ) -> Self {
+        self.employer_organization = employer_organization.map(|s| s.into());
         self
     }
     pub fn set_business_secondary_activity_code_1(
         mut self,
-        business_secondary_activity_code_1: Option<String>,
+        business_secondary_activity_code_1: Option<impl Into<String>>,
     ) -> Self {
-        self.business_secondary_activity_code_1 = business_secondary_activity_code_1;
+        self.business_secondary_activity_code_1 =
+            business_secondary_activity_code_1.map(|s| s.into());
         self
     }
     pub fn set_business_secondary_activity_code_2(
         mut self,
-        business_secondary_activity_code_2: Option<String>,
+        business_secondary_activity_code_2: Option<impl Into<String>>,
     ) -> Self {
-        self.business_secondary_activity_code_2 = business_secondary_activity_code_2;
+        self.business_secondary_activity_code_2 =
+            business_secondary_activity_code_2.map(|s| s.into());
         self
     }
     pub fn set_business_secondary_activity_code_3(
         mut self,
-        business_secondary_activity_code_3: Option<String>,
+        business_secondary_activity_code_3: Option<impl Into<String>>,
     ) -> Self {
-        self.business_secondary_activity_code_3 = business_secondary_activity_code_3;
+        self.business_secondary_activity_code_3 =
+            business_secondary_activity_code_3.map(|s| s.into());
         self
     }
     pub fn set_business_secondary_activity_code_4(
         mut self,
-        business_secondary_activity_code_4: Option<String>,
+        business_secondary_activity_code_4: Option<impl Into<String>>,
     ) -> Self {
-        self.business_secondary_activity_code_4 = business_secondary_activity_code_4;
+        self.business_secondary_activity_code_4 =
+            business_secondary_activity_code_4.map(|s| s.into());
         self
     }
-    pub fn set_comments(mut self, comments: Option<String>) -> Self {
-        self.comments = comments;
+    pub fn set_comments(mut self, comments: Option<impl Into<String>>) -> Self {
+        self.comments = comments.map(|s| s.into());
         self
     }
 }

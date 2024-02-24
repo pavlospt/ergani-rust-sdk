@@ -27,17 +27,17 @@ impl CompanyWorkCardBuilder {
 
     pub fn set_employer_tax_identification_number(
         mut self,
-        employer_tax_identification_number: String,
+        employer_tax_identification_number: impl Into<String>,
     ) -> Self {
-        self.employer_tax_identification_number = employer_tax_identification_number;
+        self.employer_tax_identification_number = employer_tax_identification_number.into();
         self
     }
     pub fn set_business_branch_number(mut self, business_branch_number: i64) -> Self {
         self.business_branch_number = business_branch_number;
         self
     }
-    pub fn set_comments(mut self, comments: Option<String>) -> Self {
-        self.comments = comments;
+    pub fn set_comments(mut self, comments: Option<impl Into<String>>) -> Self {
+        self.comments = comments.map(|s| s.into());
         self
     }
     pub fn set_card_details(mut self, card_details: Vec<WorkCard>) -> Self {
