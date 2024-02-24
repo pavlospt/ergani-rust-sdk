@@ -5,7 +5,7 @@ of [Ergani](https://www.gov.gr/en/ipiresies/ergasia-kai-asphalise/apozemioseis-k
 
 # Attributions
 Ergani Rust SDK is a Rust flavour of the relevant [Ergani Python SDK](https://github.com/withlogicco/ergani-python-sdk)
-built by [WITHLOGICO](https://withlogic.co/).
+built by [LOGIC](https://withlogic.co/).
 
 ## Requirements
 
