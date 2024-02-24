@@ -1,24 +1,34 @@
 use serde::Deserialize;
 use std::fmt::{Display, Formatter};
 
+#[derive(Deserialize, Debug)]
+pub struct ErganiError {
+    pub(crate) message: String,
+}
+
+impl ErganiError {
+    pub fn message(&self) -> &str {
+        &self.message.trim()
+    }
+}
+
 #[derive(thiserror::Error, Debug)]
 pub enum APIError {
     /// Raised when an API request fails due to an authentication error
-    AuthenticationFailed(#[source] reqwest::Error),
+    AuthenticationFailed(#[source] reqwest::Error, ErganiError),
     /// Raised when an API request fails due to an unknown error
-    General(#[from] reqwest::Error),
-}
-
-#[derive(Deserialize)]
-pub struct ErganiError {
-    pub message: String,
+    General(#[source] reqwest::Error, ErganiError),
 }
 
 impl Display for APIError {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         match self {
-            APIError::AuthenticationFailed(_) => write!(f, "Authentication failed"),
-            APIError::General(_) => write!(f, "API error from Ergani API"),
+            APIError::AuthenticationFailed(_, ergani_error) => {
+                write!(f, "Authentication failed: {}", ergani_error.message())
+            }
+            APIError::General(_, ergani_error) => {
+                write!(f, "Error from Ergani API: {}", ergani_error.message())
+            }
         }
     }
 }

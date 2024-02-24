@@ -1,4 +1,4 @@
-use crate::api_error::APIError;
+use crate::api_error::{APIError, ErganiError};
 use crate::endpoint::{AUTHENTICATION_ENDPOINT, TRIAL_API_ENDPOINT};
 use anyhow::{bail, Result};
 use reqwest::header;
@@ -47,8 +47,12 @@ impl ErganiAuthentication {
                 base_url: url,
             })
         } else {
-            let response_error = response.error_for_status().unwrap_err();
-            bail!(APIError::AuthenticationFailed(response_error))
+            let original_error = response.error_for_status_ref().unwrap_err();
+            let error_text = response.text().await?.to_string();
+            let ergani_error = ErganiError {
+                message: error_text,
+            };
+            bail!(APIError::AuthenticationFailed(original_error, ergani_error))
         }
     }
 

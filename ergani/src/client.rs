@@ -1,6 +1,6 @@
 #![allow(unused)]
 
-use crate::api_error::APIError;
+use crate::api_error::{APIError, ErganiError};
 use crate::auth::ErganiAuthentication;
 use crate::endpoint::{
     SUBMIT_DAILY_SCHEDULE_ENDPOINT, SUBMIT_OVERTIME_ENDPOINT, SUBMIT_WEEKLY_SCHEDULE_ENDPOINT,
@@ -222,8 +222,12 @@ impl ErganiClient {
         let status = response.status();
 
         if status == StatusCode::UNAUTHORIZED {
-            let response_error = response.error_for_status().unwrap_err();
-            bail!(APIError::AuthenticationFailed(response_error))
+            let original_error = response.error_for_status_ref().unwrap_err();
+            let error_text = response.text().await?.to_string();
+            let ergani_error = ErganiError {
+                message: error_text,
+            };
+            bail!(APIError::AuthenticationFailed(original_error, ergani_error))
         }
 
         if status == StatusCode::NO_CONTENT {
@@ -233,8 +237,12 @@ impl ErganiClient {
         if status.is_success() {
             Ok(Some(response))
         } else {
-            let error = response.error_for_status().unwrap_err();
-            bail!(APIError::General(error))
+            let original_error = response.error_for_status_ref().unwrap_err();
+            let error_text = response.text().await?.to_string();
+            let ergani_error = ErganiError {
+                message: error_text,
+            };
+            bail!(APIError::General(original_error, ergani_error))
         }
     }
 
