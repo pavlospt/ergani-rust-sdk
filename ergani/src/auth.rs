@@ -11,6 +11,12 @@ pub struct ErganiAuthentication {
     base_url: String,
 }
 
+#[derive(serde::Deserialize)]
+struct AuthenticationResponse {
+    #[serde(rename = "accessToken")]
+    access_token: String,
+}
+
 impl ErganiAuthentication {
     pub async fn new(
         username: String,
@@ -40,10 +46,12 @@ impl ErganiAuthentication {
             .await?;
 
         if response.status().is_success() {
-            let response_json: serde_json::Value = response.json().await?;
-            let access_token = response_json["access_token"].as_str().unwrap();
+            let authentication_response: AuthenticationResponse = response
+                .json::<AuthenticationResponse>()
+                .await?;
+
             Ok(ErganiAuthentication {
-                access_token: access_token.to_string(),
+                access_token: authentication_response.access_token,
                 base_url: url,
             })
         } else {
