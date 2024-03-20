@@ -5,6 +5,7 @@ use ergani::models::employee::employee_weekly_schedule_builder::EmployeeWeeklySc
 use ergani::models::types::schedule_work_type::ScheduleWorkType;
 use ergani::models::work_day_details_builder::WorkDayDetailsBuilder;
 
+#[allow(dead_code)]
 pub(crate) async fn submit_weekly_schedule(
     ergani_client: &ErganiClient,
 ) -> anyhow::Result<Vec<SubmissionResponse>> {

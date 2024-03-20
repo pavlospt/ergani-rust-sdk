@@ -18,6 +18,8 @@ pub enum APIError {
     AuthenticationFailed(#[source] reqwest::Error, ErganiError),
     /// Raised when an API request fails due to an unknown error
     General(#[source] reqwest::Error, ErganiError),
+    /// Raised when an API request fails due to a 404 error
+    NotFound(#[source] reqwest::Error, ErganiError),
 }
 
 impl Display for APIError {
@@ -28,6 +30,9 @@ impl Display for APIError {
             }
             APIError::General(_, ergani_error) => {
                 write!(f, "Error from Ergani API: {}", ergani_error.message())
+            }
+            APIError::NotFound(_, ergani_error) => {
+                write!(f, "Resource not found: {}", ergani_error.message())
             }
         }
     }

@@ -7,9 +7,10 @@ edition = "2021"
 
 [dependencies]
 ergani = { path = "ergani" }
-anyhow = "1.0.80"
+anyhow = "1.0"
 tokio = { version = "1.36.0", features = ["full"] }
-chrono = "0.4.34"
+chrono = "0.4"
+comfy-table = "7.1.0"
 
 [workspace]
 members = ["ergani"]

@@ -3,24 +3,29 @@
 use crate::api_error::{APIError, ErganiError};
 use crate::auth::ErganiAuthentication;
 use crate::endpoint::{
-    SUBMIT_DAILY_SCHEDULE_ENDPOINT, SUBMIT_OVERTIME_ENDPOINT, SUBMIT_WEEKLY_SCHEDULE_ENDPOINT,
-    SUBMIT_WORK_CARD_ENDPOINT,
+    DAILY_SCHEDULE_ENDPOINT, LOOKUP_SUBMISSIONS_ENDPOINT, OVERTIME_ENDPOINT, TRIAL_API_ENDPOINT,
+    WEEKLY_SCHEDULE_ENDPOINT, WORK_CARD_ENDPOINT,
 };
 use crate::internal::deserializers::deserialize_datetime;
 use crate::models::company::company_daily_schedule::CompanyDailySchedule;
 use crate::models::company::company_overtime::CompanyOvertime;
 use crate::models::company::company_weekly_schedule::CompanyWeeklySchedule;
 use crate::models::company::company_work_card::CompanyWorkCard;
+use crate::responses::lookup_response::{LookupResponse, LookupRoot};
+use crate::responses::week_schedule_response::WeekScheduleResponseRoot;
 use anyhow::{bail, Result};
 use chrono::{DateTime, Utc};
-use reqwest::{Method, Response, StatusCode};
+use reqwest::{Method, RequestBuilder, Response, StatusCode};
+use serde::de::DeserializeOwned;
 use serde::Deserialize;
 use serde_json::{json, Value};
-
-const POST_METHOD: &str = "POST";
+use crate::responses::day_schedule_response::DayScheduleResponseRoot;
+use crate::responses::overtime_response::OvertimeResponseRoot;
+use crate::responses::work_card_response::WorkCardResponseRoot;
 
 pub struct ErganiClient {
     authentication: ErganiAuthentication,
+    base_url: String,
 }
 
 /// Represents a submission response from the Ergani API
@@ -45,14 +50,16 @@ impl ErganiClient {
         password: String,
         base_url: Option<String>,
     ) -> Result<ErganiClient> {
-        let ergani_authentication = ErganiAuthentication::new(username, password, base_url).await;
-
+        let ergani_base_url = base_url.map_or(TRIAL_API_ENDPOINT.to_string(), |url| url);
+        let ergani_authentication =
+            ErganiAuthentication::new(username, password, ergani_base_url.clone()).await;
         if ergani_authentication.is_err() {
             bail!(ergani_authentication.err().unwrap())
         }
 
         Ok(ErganiClient {
             authentication: ergani_authentication.unwrap(),
+            base_url: ergani_base_url,
         })
     }
 
@@ -79,7 +86,7 @@ impl ErganiClient {
         });
 
         let response = self
-            ._request(POST_METHOD, SUBMIT_WORK_CARD_ENDPOINT, request_payload)
+            ._request(Method::POST, WORK_CARD_ENDPOINT, Some(request_payload))
             .await?;
 
         self._extract_submission_result(response).await
@@ -108,7 +115,7 @@ impl ErganiClient {
         });
 
         let response = self
-            ._request(POST_METHOD, SUBMIT_OVERTIME_ENDPOINT, request_payload)
+            ._request(Method::POST, OVERTIME_ENDPOINT, Some(request_payload))
             .await?;
 
         self._extract_submission_result(response).await
@@ -137,7 +144,7 @@ impl ErganiClient {
         });
 
         let response = self
-            ._request(POST_METHOD, SUBMIT_DAILY_SCHEDULE_ENDPOINT, request_payload)
+            ._request(Method::POST, DAILY_SCHEDULE_ENDPOINT, Some(request_payload))
             .await?;
 
         self._extract_submission_result(response).await
@@ -167,13 +174,53 @@ impl ErganiClient {
 
         let response = self
             ._request(
-                POST_METHOD,
-                SUBMIT_WEEKLY_SCHEDULE_ENDPOINT,
-                request_payload,
+                Method::POST,
+                WEEKLY_SCHEDULE_ENDPOINT,
+                Some(request_payload),
             )
             .await?;
 
         self._extract_submission_result(response).await
+    }
+
+    pub async fn fetch_submissions(&self) -> Result<LookupRoot> {
+        let response = self
+            ._request(Method::GET, LOOKUP_SUBMISSIONS_ENDPOINT, None)
+            .await?;
+
+        self._extract_fetch_result(response).await
+    }
+
+    pub async fn fetch_weekly_schedule(&self) -> Result<WeekScheduleResponseRoot> {
+        let response = self
+            ._request(Method::GET, WEEKLY_SCHEDULE_ENDPOINT, None)
+            .await?;
+
+        self._extract_fetch_result(response).await
+    }
+
+    pub async fn fetch_daily_schedule(&self) -> Result<DayScheduleResponseRoot> {
+        let response = self
+            ._request(Method::GET, DAILY_SCHEDULE_ENDPOINT, None)
+            .await?;
+
+        self._extract_fetch_result(response).await
+    }
+
+    pub async fn fetch_work_cards(&self) -> Result<WorkCardResponseRoot> {
+        let response = self
+            ._request(Method::GET, WORK_CARD_ENDPOINT, None)
+            .await?;
+
+        self._extract_fetch_result(response).await
+    }
+
+    pub async fn fetch_overtimes(&self) -> Result<OvertimeResponseRoot> {
+        let response = self
+            ._request(Method::GET, OVERTIME_ENDPOINT, None)
+            .await?;
+
+        self._extract_fetch_result(response).await
     }
 
     /// Sends a request to the specified endpoint using the given HTTP method and payload
@@ -189,21 +236,23 @@ impl ErganiClient {
     /// * - `ApiError` - errors may occur for network-related errors
     async fn _request(
         &self,
-        method: &str,
+        method: Method,
         endpoint: &str,
-        params: Value,
+        params: Option<Value>,
     ) -> Result<Option<Response>> {
         let client = reqwest::Client::builder()
             .default_headers(self.authentication.auth_headers())
             .build()?;
 
-        let url = format!("{}/{}", self.authentication.base_url(), endpoint);
+        let url = format!("{}{}", self.base_url, endpoint);
 
-        let response: Response = client
-            .request(Method::from_bytes(method.as_bytes()).unwrap(), url)
-            .json(&params)
-            .send()
-            .await?;
+        let mut request_builder = client.request(method, url);
+
+        if let Some(params) = params {
+            request_builder = request_builder.json(&params);
+        }
+
+        let response = request_builder.send().await?;
 
         self._handle_response(response).await
     }
@@ -217,6 +266,7 @@ impl ErganiClient {
     ///
     /// # Errors:
     /// * - `[APIError::General]` - An error occurred while communicating with the Ergani API
+    /// * - `[APIError::NotFound]` - Raised if the requested resource was not found
     /// * - `[APIError::AuthenticationError]` - Raised if there is an authentication error with the Ergani API
     async fn _handle_response(&self, response: Response) -> Result<Option<Response>> {
         let status = response.status();
@@ -228,6 +278,12 @@ impl ErganiClient {
                 message: error_text,
             };
             bail!(APIError::AuthenticationFailed(original_error, ergani_error))
+        }
+
+        if status == StatusCode::NOT_FOUND {
+            let original_error = response.error_for_status_ref().unwrap_err();
+            let ergani_error = response.json::<ErganiError>().await?;
+            bail!(APIError::NotFound(original_error, ergani_error))
         }
 
         if status == StatusCode::NO_CONTENT {
@@ -258,6 +314,21 @@ impl ErganiClient {
         }
 
         let response: Vec<SubmissionResponse> = response.unwrap().json().await?;
+
+        Ok(response)
+    }
+
+    /// Extracts the lookup result from the Ergani API response
+    /// # Arguments:
+    /// * - `response` - The response object from the Ergani API
+    ///
+    /// # Returns:
+    ///  * - `T` - A Vec of T responses parsed from the API response
+    async fn _extract_fetch_result<T: DeserializeOwned>(
+        &self,
+        response: Option<Response>,
+    ) -> Result<T> {
+        let response: T = response.unwrap().json().await?;
 
         Ok(response)
     }

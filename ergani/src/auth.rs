@@ -1,5 +1,5 @@
 use crate::api_error::{APIError, ErganiError};
-use crate::endpoint::{AUTHENTICATION_ENDPOINT, TRIAL_API_ENDPOINT};
+use crate::endpoint::AUTHENTICATION_ENDPOINT;
 use anyhow::{bail, Result};
 use reqwest::header;
 use reqwest::header::HeaderMap;
@@ -8,7 +8,6 @@ use serde_json::json;
 /// Authentication handler for the Ergani API
 pub struct ErganiAuthentication {
     pub access_token: String,
-    base_url: String,
 }
 
 #[derive(serde::Deserialize)]
@@ -21,10 +20,9 @@ impl ErganiAuthentication {
     pub async fn new(
         username: String,
         password: String,
-        base_url: Option<String>,
+        base_url: String,
     ) -> Result<ErganiAuthentication> {
-        let url = base_url.unwrap_or_else(|| TRIAL_API_ENDPOINT.to_string());
-        ErganiAuthentication::authenticate(username, password, url).await
+        ErganiAuthentication::authenticate(username, password, base_url).await
     }
 
     async fn authenticate(
@@ -46,13 +44,11 @@ impl ErganiAuthentication {
             .await?;
 
         if response.status().is_success() {
-            let authentication_response: AuthenticationResponse = response
-                .json::<AuthenticationResponse>()
-                .await?;
+            let authentication_response: AuthenticationResponse =
+                response.json::<AuthenticationResponse>().await?;
 
             Ok(ErganiAuthentication {
                 access_token: authentication_response.access_token,
-                base_url: url,
             })
         } else {
             let original_error = response.error_for_status_ref().unwrap_err();
@@ -62,10 +58,6 @@ impl ErganiAuthentication {
             };
             bail!(APIError::AuthenticationFailed(original_error, ergani_error))
         }
-    }
-
-    pub fn base_url(&self) -> String {
-        self.base_url.clone()
     }
 
     pub fn auth_headers(&self) -> HeaderMap {
