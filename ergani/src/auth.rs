@@ -34,7 +34,7 @@ impl ErganiAuthentication {
             .json(&json!({
                 "Username": username,
                 "Password": password,
-                "UserType": "01"
+                "UserType": "02"
             }))
             .send()
             .await?;
