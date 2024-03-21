@@ -8,12 +8,11 @@ pub(crate) async fn fetch_weekly_schedule(ergani_client: &ErganiClient) -> anyho
 
     let mut weekly_schedule_tables: Vec<Table> = vec![];
 
-    for (index, wto) in week_schedule.week_schedule.wtos.wto.into_iter().enumerate() {
+    for wto in week_schedule.week_schedule.wtos.wto {
         let mut wto_table = Table::new();
         wto_table
             .load_preset(UTF8_FULL)
             .set_content_arrangement(ContentArrangement::Dynamic)
-            .set_width(80)
             .set_header(vec![
                 Cell::new("Parartima").add_attribute(Attribute::Bold),
                 Cell::new("Comments").add_attribute(Attribute::Bold),
@@ -21,83 +20,53 @@ pub(crate) async fn fetch_weekly_schedule(ergani_client: &ErganiClient) -> anyho
                 Cell::new("To").add_attribute(Attribute::Bold),
             ]);
 
-        let current_index = index + 1;
-
         wto_table.add_row(vec![
-            Cell::new(format!("{}:{current_index}", wto.f_aa_pararthmatos)),
-            Cell::new(format!("{}:{current_index}", wto.f_comments)),
-            Cell::new(format!("{}:{current_index}", wto.f_from_date)),
-            Cell::new(format!("{}:{current_index}", wto.f_to_date)),
+            Cell::new(format!("{}", wto.f_aa_pararthmatos)),
+            Cell::new(format!("{}", wto.f_comments)),
+            Cell::new(format!("{}", wto.f_from_date)),
+            Cell::new(format!("{}", wto.f_to_date)),
         ]);
 
         weekly_schedule_tables.push(wto_table);
 
-        for (ergazomenos_index, ergazomenos) in
-            wto.ergazomenoi.ergazomenoi_wto.into_iter().enumerate()
-        {
+        for ergazomenos in wto.ergazomenoi.ergazomenoi_wto {
             let mut ergazomenos_table = Table::new();
             ergazomenos_table
                 .load_preset(UTF8_FULL)
                 .set_content_arrangement(ContentArrangement::Dynamic)
-                .set_width(80)
                 .set_header(vec![
                     Cell::new("AFM").add_attribute(Attribute::Bold),
                     Cell::new("Eponymo").add_attribute(Attribute::Bold),
                     Cell::new("Onoma").add_attribute(Attribute::Bold),
                 ]);
 
-            let current_ergazomenos_index = ergazomenos_index + 1;
-
             ergazomenos_table.add_row(vec![
-                Cell::new(format!("{}:{current_ergazomenos_index}", ergazomenos.f_afm)),
-                Cell::new(format!(
-                    "{}:{current_ergazomenos_index}",
-                    ergazomenos.f_eponymo
-                )),
-                Cell::new(format!(
-                    "{}:{current_ergazomenos_index}",
-                    ergazomenos.f_onoma
-                )),
+                Cell::new(format!("{}", ergazomenos.f_afm)),
+                Cell::new(format!("{}", ergazomenos.f_eponymo)),
+                Cell::new(format!("{}", ergazomenos.f_onoma)),
             ]);
 
             weekly_schedule_tables.push(ergazomenos_table);
 
-            for (ergazomenos_analytics_index, ergazomenos_analytic) in ergazomenos
-                .ergazomenos_analytics
-                .ergazomenos_wtoanalytics
-                .into_iter()
-                .enumerate()
-            {
-                let mut ergazomenos_analytic_table = Table::new();
-                ergazomenos_analytic_table
-                    .load_preset(UTF8_FULL)
-                    .set_content_arrangement(ContentArrangement::Dynamic)
-                    .set_width(80)
-                    .set_header(vec![
-                        Cell::new("Type").add_attribute(Attribute::Bold),
-                        Cell::new("From").add_attribute(Attribute::Bold),
-                        Cell::new("To").add_attribute(Attribute::Bold),
-                    ]);
-
-                let current_ergazomenos_analytic_index = ergazomenos_analytics_index + 1;
-
-                ergazomenos_analytic_table.add_row(vec![
-                    Cell::new(format!(
-                        "{}:{current_ergazomenos_analytic_index}",
-                        ergazomenos_analytic.f_type
-                    )),
-                    Cell::new(format!(
-                        "{}:{current_ergazomenos_analytic_index}",
-                        ergazomenos_analytic.f_from
-                    )),
-                    Cell::new(format!(
-                        "{}:{current_ergazomenos_analytic_index}",
-                        ergazomenos_analytic.f_to
-                    )),
+            let mut ergazomenos_analytic_table = Table::new();
+            ergazomenos_analytic_table
+                .load_preset(UTF8_FULL)
+                .set_content_arrangement(ContentArrangement::Dynamic)
+                .set_header(vec![
+                    Cell::new("Type").add_attribute(Attribute::Bold),
+                    Cell::new("From").add_attribute(Attribute::Bold),
+                    Cell::new("To").add_attribute(Attribute::Bold),
                 ]);
 
-                weekly_schedule_tables.push(ergazomenos_analytic_table);
+            for ergazomenos_analytic in ergazomenos.ergazomenos_analytics.ergazomenos_wtoanalytics {
+                ergazomenos_analytic_table.add_row(vec![
+                    Cell::new(format!("{}", ergazomenos_analytic.f_type)),
+                    Cell::new(format!("{}", ergazomenos_analytic.f_from)),
+                    Cell::new(format!("{}", ergazomenos_analytic.f_to)),
+                ]);
             }
+
+            weekly_schedule_tables.push(ergazomenos_analytic_table);
         }
     }
 
