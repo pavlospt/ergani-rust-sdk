@@ -23,9 +23,9 @@ async fn main() -> Result<()> {
 
     // Submit a work card
     // let result = submit_work_card::submit_work_card(&client).await;
-    //
+
     // Submit an overtime
-    let result = submit_overtime::submit_overtime(&client).await;
+    // let result = submit_overtime::submit_overtime(&client).await;
 
     // Submit a daily schedule
     // let result = submit_daily_schedule::submit_daily_schedule(&client).await;
@@ -34,26 +34,26 @@ async fn main() -> Result<()> {
     // let result = submit_weekly_schedule::submit_weekly_schedule(&client).await;
 
     // Fetch work cards
-    // fetch_work_cards::fetch_work_cards(&client).await?;
+    // let result = fetch_work_cards::fetch_work_cards(&client).await;
 
     // Fetch the weekly schedule
-    // fetch_weekly_schedule::fetch_weekly_schedule(&client).await?;
+    let result = fetch_weekly_schedule::fetch_weekly_schedule(&client).await;
 
     // Fetch the daily schedule
-    // fetch_daily_schedule::fetch_daily_schedule(&client).await?;
+    // let result = fetch_daily_schedule::fetch_daily_schedule(&client).await;
 
     // Fetch the overtime
-    // fetch_overtime::fetch_overtimes(&client).await?;
+    // let result = fetch_overtime::fetch_overtimes(&client).await;
 
     match result {
-        Err(e) => print_pretty_error(e),
+        Err(e) => pretty_print_error(e),
         _ => {}
     }
 
     Ok(())
 }
 
-fn print_pretty_error(error: Error) {
+fn pretty_print_error(error: Error) {
     let mut error_table = Table::new();
     error_table.set_header(vec![Cell::new("Error")
         .add_attribute(Attribute::Bold)
