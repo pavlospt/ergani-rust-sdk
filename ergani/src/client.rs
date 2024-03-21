@@ -11,17 +11,18 @@ use crate::models::company::company_daily_schedule::CompanyDailySchedule;
 use crate::models::company::company_overtime::CompanyOvertime;
 use crate::models::company::company_weekly_schedule::CompanyWeeklySchedule;
 use crate::models::company::company_work_card::CompanyWorkCard;
+use crate::responses::day_schedule_response::DayScheduleResponseRoot;
 use crate::responses::lookup_response::{LookupResponse, LookupRoot};
+use crate::responses::overtime_response::OvertimeResponseRoot;
 use crate::responses::week_schedule_response::WeekScheduleResponseRoot;
+use crate::responses::work_card_response::WorkCardResponseRoot;
 use anyhow::{bail, Result};
 use chrono::{DateTime, Utc};
+use reqwest::header::HeaderValue;
 use reqwest::{Method, RequestBuilder, Response, StatusCode};
 use serde::de::DeserializeOwned;
 use serde::Deserialize;
 use serde_json::{json, Value};
-use crate::responses::day_schedule_response::DayScheduleResponseRoot;
-use crate::responses::overtime_response::OvertimeResponseRoot;
-use crate::responses::work_card_response::WorkCardResponseRoot;
 
 pub struct ErganiClient {
     authentication: ErganiAuthentication,
@@ -79,6 +80,7 @@ impl ErganiClient {
         company_work_cards: Vec<CompanyWorkCard>,
     ) -> Result<Vec<SubmissionResponse>> {
         let params = serde_json::to_value(company_work_cards)?;
+
         let request_payload = json!({
             "Cards": {
                 "Card": params
@@ -208,17 +210,13 @@ impl ErganiClient {
     }
 
     pub async fn fetch_work_cards(&self) -> Result<WorkCardResponseRoot> {
-        let response = self
-            ._request(Method::GET, WORK_CARD_ENDPOINT, None)
-            .await?;
+        let response = self._request(Method::GET, WORK_CARD_ENDPOINT, None).await?;
 
         self._extract_fetch_result(response).await
     }
 
     pub async fn fetch_overtimes(&self) -> Result<OvertimeResponseRoot> {
-        let response = self
-            ._request(Method::GET, OVERTIME_ENDPOINT, None)
-            .await?;
+        let response = self._request(Method::GET, OVERTIME_ENDPOINT, None).await?;
 
         self._extract_fetch_result(response).await
     }
@@ -238,18 +236,22 @@ impl ErganiClient {
         &self,
         method: Method,
         endpoint: &str,
-        params: Option<Value>,
+        body: Option<Value>,
     ) -> Result<Option<Response>> {
+        let request_headers = self.authentication.auth_headers();
         let client = reqwest::Client::builder()
-            .default_headers(self.authentication.auth_headers())
+            .default_headers(request_headers)
+            .user_agent("Ergani Rust Client")
             .build()?;
 
         let url = format!("{}{}", self.base_url, endpoint);
+        // let url = format!("{}{}", "http://localhost:8080", endpoint);
 
         let mut request_builder = client.request(method, url);
 
-        if let Some(params) = params {
-            request_builder = request_builder.json(&params);
+        if let Some(body) = body {
+            let response = request_builder.json(&body).send().await?;
+            return self._handle_response(response).await;
         }
 
         let response = request_builder.send().await?;

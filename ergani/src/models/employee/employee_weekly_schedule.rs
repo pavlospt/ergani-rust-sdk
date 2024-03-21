@@ -75,7 +75,7 @@ mod tests {
             employee_tax_identification_number: "123456789".to_string(),
             employee_last_name: "Παπαδόπουλος".to_string(),
             employee_first_name: "Γιάννης".to_string(),
-            schedule_date: "2014-11-28".parse::<NaiveDate>().unwrap(),
+            schedule_date: "2024-03-17".parse::<NaiveDate>().unwrap(),
             workday_details,
         };
 

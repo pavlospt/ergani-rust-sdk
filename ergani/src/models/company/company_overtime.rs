@@ -100,27 +100,30 @@ impl Serialize for CompanyOvertime {
         };
 
         let mut company_overtime = serializer.serialize_struct("CompanyOvertime", 15)?;
-        company_overtime.serialize_field("f_aa_pararthmatos", &self.business_branch_number)?;
+        company_overtime.serialize_field(
+            "f_aa_pararthmatos",
+            &self.business_branch_number.to_string(),
+        )?;
+        company_overtime.serialize_field("f_rel_protocol", &related_protocol_id)?;
+        company_overtime.serialize_field("f_rel_date", &related_protocol_date)?;
         company_overtime.serialize_field("f_ypiresia_sepe", &self.sepe_service_code)?;
+        company_overtime.serialize_field("f_ergodotikh_organwsh", &employer_organization)?;
         company_overtime.serialize_field("f_kad_kyria", &self.business_primary_activity_code)?;
+        company_overtime.serialize_field("f_kad_deyt_1", &business_secondary_activity_code_1)?;
+        company_overtime.serialize_field("f_kad_deyt_2", &business_secondary_activity_code_2)?;
+        company_overtime.serialize_field("f_kad_deyt_3", &business_secondary_activity_code_3)?;
+        company_overtime.serialize_field("f_kad_deyt_4", &business_secondary_activity_code_4)?;
         company_overtime
             .serialize_field("f_kad_pararthmatos", &self.business_branch_activity_code)?;
         company_overtime.serialize_field(
             "f_kallikratis_pararthmatos",
             &self.kallikratis_municipal_code,
         )?;
+        company_overtime.serialize_field("f_comments", &comments)?;
         company_overtime.serialize_field(
             "f_afm_proswpoy",
             &self.legal_representative_tax_identification_number,
         )?;
-        company_overtime.serialize_field("f_rel_protocol", &related_protocol_id)?;
-        company_overtime.serialize_field("f_rel_date", &related_protocol_date)?;
-        company_overtime.serialize_field("f_ergodotikh_organwsh", &employer_organization)?;
-        company_overtime.serialize_field("f_kad_deyt_1", &business_secondary_activity_code_1)?;
-        company_overtime.serialize_field("f_kad_deyt_2", &business_secondary_activity_code_2)?;
-        company_overtime.serialize_field("f_kad_deyt_3", &business_secondary_activity_code_3)?;
-        company_overtime.serialize_field("f_kad_deyt_4", &business_secondary_activity_code_4)?;
-        company_overtime.serialize_field("f_comments", &comments)?;
         company_overtime.serialize_field("Ergazomenoi", &overtimes)?;
         company_overtime.end()
     }

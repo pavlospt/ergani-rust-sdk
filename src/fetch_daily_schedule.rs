@@ -37,7 +37,7 @@ pub(crate) async fn fetch_daily_schedule(ergani_client: &ErganiClient) -> anyhow
         daily_schedule_tables.push(wto_table);
 
         for (ergazomenos_index, ergazomenos) in
-        wto.ergazomenoi.ergazomenoi_wto.into_iter().enumerate()
+            wto.ergazomenoi.ergazomenoi_wto.into_iter().enumerate()
         {
             let mut ergazomenos_table = Table::new();
             ergazomenos_table

@@ -37,7 +37,7 @@ impl Serialize for CompanyWorkCard {
         let mut company_work_card = serializer.serialize_struct("CompanyWorkCard", 4)?;
         company_work_card
             .serialize_field("f_afm_ergodoti", &self.employer_tax_identification_number)?;
-        company_work_card.serialize_field("f_aa", &self.business_branch_number)?;
+        company_work_card.serialize_field("f_aa", &self.business_branch_number.to_string())?;
         company_work_card.serialize_field("f_comments", sanitized_comments)?;
         company_work_card.serialize_field("Details", &details)?;
         company_work_card.end()
@@ -48,6 +48,7 @@ impl Serialize for CompanyWorkCard {
 mod tests {
     use super::*;
     use crate::models::types::work_card_movement_type::WorkCardMovementType;
+    use crate::tests::load_fixture_as_text;
     use chrono::{DateTime, NaiveDate, Utc};
 
     #[test]
@@ -73,7 +74,7 @@ mod tests {
         };
 
         let serialized = serde_json::to_string(&company_work_card).unwrap();
-        let expected = r#"{"f_afm_ergodoti":"987654321","f_aa":1,"f_comments":"Σχόλια","Details":{"CardDetails":[{"f_afm":"123456789","f_eponymo":"ΠΑΠΑΔΟΠΟΥΛΟΣ","f_onoma":"ΓΕΩΡΓΙΟΣ","f_type":"1","f_reference_date":"2021-01-01","f_date":"2014-11-28T12:00:00","f_aitiologia":""}]}}"#;
+        let expected = load_fixture_as_text("company_work_card_fixture.json");
         assert_eq!(serialized, expected);
     }
 }

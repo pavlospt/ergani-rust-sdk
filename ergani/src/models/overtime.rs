@@ -38,6 +38,7 @@ impl Serialize for Overtime {
     where
         S: Serializer,
     {
+        let overtime_cancellation = get_ergani_overtime_cancellation(self.overtime_cancellation);
         let mut overtime = serializer.serialize_struct("Overtime", 11)?;
         overtime.serialize_field("f_afm", &self.employee_tax_identification_number)?;
         overtime.serialize_field("f_amka", &self.employee_social_security_number)?;
@@ -46,8 +47,6 @@ impl Serialize for Overtime {
         overtime.serialize_field("f_date", &format_date(Some(&self.overtime_date)))?;
         overtime.serialize_field("f_from", &format_time(&self.overtime_start_time))?;
         overtime.serialize_field("f_to", &format_time(&self.overtime_end_time))?;
-
-        let overtime_cancellation = get_ergani_overtime_cancellation(self.overtime_cancellation);
         overtime.serialize_field("f_cancellation", &overtime_cancellation)?;
         overtime.serialize_field("f_step", &self.employee_profession_code)?;
         overtime.serialize_field("f_reason", &self.overtime_justification.value())?;
@@ -60,6 +59,7 @@ impl Serialize for Overtime {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::tests::load_fixture_as_text;
 
     #[test]
     fn test_serialize_overtime() {
@@ -86,9 +86,7 @@ mod tests {
         };
 
         let serialized = serde_json::to_string(&overtime).unwrap();
-        assert_eq!(
-            serialized,
-            r#"{"f_afm":"123456789","f_amka":"12345678901","f_eponymo":"ΠΑΠΑΔΟΠΟΥΛΟΣ","f_onoma":"ΓΕΩΡΓΙΟΣ","f_date":"01/01/2021","f_from":"12:00","f_to":"12:00","f_cancellation":"Ο","f_step":"1234","f_reason":"001","f_weekdates":"5","f_asee":"123456789"}"#
-        );
+        let expected = load_fixture_as_text("overtime_fixture.json");
+        assert_eq!(serialized, expected);
     }
 }

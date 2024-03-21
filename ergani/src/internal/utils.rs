@@ -45,10 +45,13 @@ pub(crate) fn format_datetime(datetime: Option<&DateTime<Utc>>) -> String {
 /// * - `date` - The date that is going to be evaluated
 ///
 /// # Returns:
-/// The day of the week
+/// The ordinal for the day of the week
 pub(crate) fn get_day_of_week(date: Option<NaiveDate>) -> String {
     match date {
-        Some(date) => date.weekday().to_string(),
+        Some(date) => {
+            let number_from_sunday = date.weekday().number_from_sunday() - 1;
+            number_from_sunday.to_string()
+        }
         None => "".to_string(),
     }
 }
@@ -64,7 +67,7 @@ pub(crate) fn get_ergani_overtime_cancellation(cancellation: bool) -> String {
     if cancellation {
         "1".to_string()
     } else {
-        "Ο".to_string()
+        "0".to_string()
     }
 }
 
@@ -99,9 +102,10 @@ mod tests {
 
     #[test]
     fn test_get_day_of_week() {
-        let date = NaiveDate::from_ymd_opt(2021, 1, 1).unwrap();
+        let date = NaiveDate::from_ymd_opt(2024, 3, 17).unwrap();
         let day_of_week = get_day_of_week(Some(date));
-        assert_eq!(day_of_week, date.weekday().to_string());
+        let expected_day_of_week = (date.weekday().number_from_sunday() - 1).to_string();
+        assert_eq!(day_of_week, expected_day_of_week);
     }
 
     #[test]
