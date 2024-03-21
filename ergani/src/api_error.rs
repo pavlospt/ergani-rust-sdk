@@ -29,11 +29,7 @@ impl Display for APIError {
                 write!(f, "Authentication failed: {}", ergani_error.message())
             }
             APIError::General(_, ergani_error) => {
-                write!(
-                    f,
-                    "Error from Ergani API: {}",
-                    format!("{}", ergani_error.message())
-                )
+                write!(f, "{}", ergani_error.message())
             }
             APIError::NotFound(_, ergani_error) => {
                 write!(f, "Resource not found: {}", ergani_error.message())

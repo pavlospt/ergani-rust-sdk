@@ -21,17 +21,17 @@ async fn main() -> Result<()> {
 
     let client = ErganiClient::new(ergani_username, ergani_password, Some(ergani_base_url)).await?;
 
-    // // Submit a work card
-    // submit_work_card::submit_work_card(&client).await?;
+    // Submit a work card
+    // let result = submit_work_card::submit_work_card(&client).await;
     //
-    // // Submit an overtime
-    // submit_overtime::submit_overtime(&client).await?;
-    //
-    // // Submit a daily schedule
-    // submit_daily_schedule::submit_daily_schedule(&client).await?;
-    //
-    // // Submit a weekly schedule
-    let result = submit_weekly_schedule::submit_weekly_schedule(&client).await;
+    // Submit an overtime
+    let result = submit_overtime::submit_overtime(&client).await;
+
+    // Submit a daily schedule
+    // let result = submit_daily_schedule::submit_daily_schedule(&client).await;
+
+    // Submit a weekly schedule
+    // let result = submit_weekly_schedule::submit_weekly_schedule(&client).await;
 
     // Fetch work cards
     // fetch_work_cards::fetch_work_cards(&client).await?;
