@@ -1,6 +1,6 @@
 [package]
 name = "ergani"
-version = "0.1.7"
+version = "0.1.8"
 edition = "2021"
 license = "MIT"
 description = "Rust SDK for the Greek government Ergani API for employee workflows"
