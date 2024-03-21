@@ -51,26 +51,33 @@ async fn submit_work_card(company_work_cards: Vec<CompanyWorkCard>) -> Result<Ve
 #### Example
 
 ```rust
-let work_card = vec![
-    CompanyWorkCardBuilder::builder()
-        .set_employer_tax_identification_number("0123456789")
-        .set_business_branch_number(12)
-        .set_comments(Some("Σχόλia"))
-        .set_card_details(vec![
-            WorkCardBuilder::builder()
-                .set_employee_tax_identification_number("0123456789")
-                .set_employee_last_name("Last")
-                .set_employee_first_name("First")
-                .set_work_card_movement_type(WorkCardMovementType::Arrival)
-                .set_work_card_submission_date(NaiveDate::parse_from_str("2021-01-01", "%Y-%m-%d").unwrap())
-                .set_work_card_movement_datetime(DateTime::parse_from_str("2021-01-01T12:00", "%Y-%m-%dT%H:%M").unwrap().to_utc())
-                .set_late_declaration_justification(Some(LateDeclarationJustificationType::PowerOutage))
-                .build()?
-        ])
-        .build()
-];
+let work_card_movement_datetime =
+    NaiveDateTime::parse_from_str("2024-03-20 10:00", "%Y-%m-%d %H:%M")
+    .unwrap()
+    .and_utc();
 
-ergani_client.submit_work_card(work_card).await?;
+let work_card_submission_date = NaiveDate::parse_from_str("2022-05-04", "%Y-%m-%d").unwrap();
+
+let work_card = vec![CompanyWorkCardBuilder::builder()
+    .set_employer_tax_identification_number("123456789")
+    .set_business_branch_number(0)
+    .set_comments(Some("Σχόλια"))
+    .set_card_details(vec![WorkCardBuilder::builder()
+        .set_employee_tax_identification_number("123456789")
+        .set_employee_last_name("Last")
+        .set_employee_first_name("First")
+        .set_work_card_movement_type(WorkCardMovementType::Arrival)
+        .set_work_card_submission_date(work_card_submission_date)
+        .set_work_card_movement_datetime(work_card_movement_datetime)
+        .set_late_declaration_justification(Some(LateDeclarationJustificationType::PowerOutage))
+        .build()?])
+    .build()];
+
+let response = ergani_client.submit_work_card(work_card).await?;
+
+response.iter().for_each(|r| {
+    println!("{:?}", r);
+});
 ```
 
 **Note:** You can submit work cards for various employees across multiple company branches simultaneously as shown
@@ -87,43 +94,45 @@ async fn submit_overtime(company_overtimes: Vec<CompanyOvertime>) -> Result<Vec<
 #### Example
 
 ```rust
-let company_overtimes = vec![
-    CompanyOvertimeBuilder::builder()
-        .set_business_branch_number(12)
-        .set_sepe_service_code("10")
-        .set_business_primary_activity_code("100")
-        .set_business_branch_activity_code("101")
-        .set_kallikratis_municipal_code("100")
-        .set_legal_representative_tax_identification_number("0123456789")
-        .set_employee_overtimes(vec![OvertimeBuilder::builder()
-            .set_employee_tax_identification_number("0123456789")
-            .set_employee_social_security_number("0123456789")
-            .set_employee_last_name("Last")
-            .set_employee_first_name("First")
-            .set_overtime_date(NaiveDate::from_ymd_opt(2024, 3, 1).unwrap())
-            .set_overtime_start_time("2024-03-01T12:00:00Z".parse::<DateTime<Utc>>().unwrap())
-            .set_overtime_end_time("2024-03-01T20:00:00Z".parse::<DateTime<Utc>>().unwrap())
-            .set_overtime_cancellation(false)
-            .set_employee_profession_code("")
-            .set_overtime_justification(
-                OvertimeJustificationType::AccidentPreventionOrDamageRestoration,
-            )
-            .set_weekly_workdays_number(WeeklyWorkDays::Five)
-            .set_asee_approval(Some("ΑΣΕΕ"))
-            .build()
-            .unwrap()])
-        .set_related_protocol_id(Some("Αρ. Πρωτ. Σχετ."))
-        .set_related_protocol_date(Some(NaiveDate::from_ymd_opt(2024, 3, 1).unwrap()))
-        .set_employer_organization(Some("Εργοδότης"))
-        .set_business_secondary_activity_code_1(Some("ΚΑΔ 1"))
-        .set_business_secondary_activity_code_2(Some("ΚΑΔ 2"))
-        .set_business_secondary_activity_code_3(Some("ΚΑΔ 3"))
-        .set_business_secondary_activity_code_4(Some("ΚΑΔ 4"))
-        .set_comments(Some("Σχόλια"))
-        .build(),
-];
+let start_time = "2024-03-01T12:00:00Z".parse::<DateTime<Utc>>().unwrap();
+let end_time = "2024-03-01T20:00:00Z".parse::<DateTime<Utc>>().unwrap();
+let related_protocol_date = NaiveDate::from_ymd_opt(2024, 3, 1).unwrap();
 
-ergani_client.submit_overtime(company_overtimes).await?;
+let company_overtimes = vec![CompanyOvertimeBuilder::builder()
+    .set_business_branch_number(0)
+    .set_sepe_service_code("10000")
+    .set_business_primary_activity_code("1000")
+    .set_business_branch_activity_code("1010")
+    .set_kallikratis_municipal_code("10000000")
+    .set_legal_representative_tax_identification_number("123456789")
+    .set_employee_overtimes(vec![OvertimeBuilder::builder()
+        .set_employee_tax_identification_number("123456789")
+        .set_employee_social_security_number("00000000000")
+        .set_employee_last_name("Last")
+        .set_employee_first_name("First")
+        .set_overtime_date(NaiveDate::from_ymd_opt(2024, 3, 1).unwrap())
+        .set_overtime_start_time(start_time)
+        .set_overtime_end_time(end_time)
+        .set_overtime_cancellation(false)
+        .set_employee_profession_code("1234")
+        .set_overtime_justification(
+            OvertimeJustificationType::AccidentPreventionOrDamageRestoration,
+        )
+        .set_weekly_workdays_number(WeeklyWorkDays::Five)
+        .set_asee_approval(Some("ΑΣΕΕ"))
+        .build()
+        .unwrap()])
+    .set_related_protocol_id(Some("Αρ. Πρωτ. Σχετ."))
+    .set_related_protocol_date(Some(related_protocol_date))
+    .set_employer_organization(Some("Εργοδότης"))
+    .set_business_secondary_activity_code_1(Some("1011"))
+    .set_business_secondary_activity_code_2(Some("1012"))
+    .set_business_secondary_activity_code_3(Some("1013"))
+    .set_business_secondary_activity_code_4(Some("1014"))
+    .set_comments(Some("Σχόλια"))
+    .build()];
+
+let response = ergani_client.submit_overtime(company_overtimes).await?;
 ```
 
 **Note:** You can submit overtime records for various employees across multiple company branches simultaneously.
@@ -140,40 +149,40 @@ async fn submit_daily_schedule(company_daily_schedules: Vec<CompanyDailySchedule
 #### Example
 
 ```rust
-let company_daily_schedules = vec![
-    CompanyDailyScheduleBuilder::builder()
-        .set_business_branch_number(12)
-        .set_start_date(NaiveDate::from_ymd_opt(2024, 3, 1).unwrap())
-        .set_end_date(NaiveDate::from_ymd_opt(2024, 3, 2).unwrap())
-        .set_employee_schedules(vec![
-            EmployeeDailyScheduleBuilder::builder()
-                .set_employee_tax_identification_number("0123456789")
-                .set_employee_last_name("Last")
-                .set_employee_first_name("First")
-                .set_schedule_date(NaiveDate::from_ymd_opt(2024, 3, 3).unwrap())
-                .set_workday_details(vec![
-                    WorkDayDetailsBuilder::builder()
-                        .set_work_type(ScheduleWorkType::WorkFromHome)
-                        .set_start_time("2024-03-01T12:00:00Z".parse::<DateTime<Utc>>().unwrap())
-                        .set_end_time("2024-03-01T20:00:00Z".parse::<DateTime<Utc>>().unwrap())
-                        .build()?,
-                    WorkDayDetailsBuilder::builder()
-                        .set_work_type(ScheduleWorkType::WorkFromOffice)
-                        .set_start_time("2024-03-02T12:00:00Z".parse::<DateTime<Utc>>().unwrap())
-                        .set_end_time("2024-03-02T20:00:00Z".parse::<DateTime<Utc>>().unwrap())
-                        .build()?,
-                ])
-                .build()
-        ])
-        .set_related_protocol_id(Some("1"))
-        .set_related_protocol_date(Some(NaiveDate::from_ymd_opt(2024, 3, 1).unwrap()))
-        .set_comments(Some("Σχόλια"))
-        .build()
-];
+let start_time = "2024-03-01T12:00:00Z".parse::<DateTime<Utc>>().unwrap();
+let end_time = "2024-03-01T20:00:00Z".parse::<DateTime<Utc>>().unwrap();
+let related_protocol_date = NaiveDate::from_ymd_opt(2024, 3, 1).unwrap();
 
-ergani_client
-.submit_daily_schedule(company_daily_schedules)
-.await?;
+let company_daily_schedules = vec![CompanyDailyScheduleBuilder::builder()
+    .set_business_branch_number(0)
+    .set_start_date(NaiveDate::from_ymd_opt(2024, 3, 1).unwrap())
+    .set_end_date(NaiveDate::from_ymd_opt(2024, 3, 2).unwrap())
+    .set_employee_schedules(vec![EmployeeDailyScheduleBuilder::builder()
+        .set_employee_tax_identification_number("123456789")
+        .set_employee_last_name("Last")
+        .set_employee_first_name("First")
+        .set_schedule_date(NaiveDate::from_ymd_opt(2024, 3, 3).unwrap())
+        .set_workday_details(vec![
+            WorkDayDetailsBuilder::builder()
+                .set_work_type(ScheduleWorkType::WorkFromHome)
+                .set_start_time(start_time)
+                .set_end_time(end_time)
+                .build()?,
+            WorkDayDetailsBuilder::builder()
+                .set_work_type(ScheduleWorkType::WorkFromOffice)
+                .set_start_time(start_time)
+                .set_end_time(end_time)
+                .build()?,
+        ])
+        .build()])
+    .set_related_protocol_id(Some("1"))
+    .set_related_protocol_date(Some(related_protocol_date))
+    .set_comments(Some("Σχόλια"))
+    .build()];
+
+let response = ergani_client
+    .submit_daily_schedule(company_daily_schedules)
+    .await?;
 ```
 
 ### Weekly schedule
@@ -187,46 +196,47 @@ async fn submit_weekly_schedule(company_weekly_schedules: Vec<CompanyWeeklySched
 #### Example
 
 ```rust
-let company_weekly_schedules = vec![
-    CompanyWeeklyScheduleBuilder::builder()
-        .set_business_branch_number(10)
-        .set_start_date(NaiveDate::from_ymd_opt(2024, 3, 1).unwrap())
-        .set_end_date(NaiveDate::from_ymd_opt(2024, 3, 2).unwrap())
-        .set_employee_schedules(vec![
-            EmployeeWeeklyScheduleBuilder::builder()
-                .set_employee_tax_identification_number("0123456789")
-                .set_employee_last_name("Last")
-                .set_employee_first_name("First")
-                .set_schedule_date(NaiveDate::from_ymd_opt(2024, 3, 3).unwrap())
-                .set_workday_details(vec![
-                    WorkDayDetailsBuilder::builder()
-                        .set_work_type(ScheduleWorkType::WorkFromHome)
-                        .set_start_time("2024-03-01T12:00:00Z".parse::<DateTime<Utc>>().unwrap())
-                        .set_end_time("2024-03-01T20:00:00Z".parse::<DateTime<Utc>>().unwrap())
-                        .build()?,
-                    WorkDayDetailsBuilder::builder()
-                        .set_work_type(ScheduleWorkType::WorkFromOffice)
-                        .set_start_time("2024-03-02T12:00:00Z".parse::<DateTime<Utc>>().unwrap())
-                        .set_end_time("2024-03-02T20:00:00Z".parse::<DateTime<Utc>>().unwrap())
-                        .build()?,
-                ])
-                .build()
-        ])
-        .set_related_protocol_id(Some("1"))
-        .set_related_protocol_date(Some(NaiveDate::from_ymd_opt(2024, 3, 1).unwrap()))
-        .build()
-];
+    let start_time = "2024-03-01T12:00:00Z".parse::<DateTime<Utc>>().unwrap();
+let end_time = "2024-03-01T20:00:00Z".parse::<DateTime<Utc>>().unwrap();
+let related_protocol_date = NaiveDate::from_ymd_opt(2024, 3, 1).unwrap();
+let schedule_date = NaiveDate::from_ymd_opt(2024, 3, 3).unwrap();
 
-ergani_client
-.submit_weekly_schedule(company_weekly_schedules)
-.await?;
+let company_weekly_schedules = vec![CompanyWeeklyScheduleBuilder::builder()
+    .set_business_branch_number(0)
+    .set_start_date(NaiveDate::from_ymd_opt(2024, 3, 1).unwrap())
+    .set_end_date(NaiveDate::from_ymd_opt(2024, 3, 2).unwrap())
+    .set_employee_schedules(vec![EmployeeWeeklyScheduleBuilder::builder()
+        .set_employee_tax_identification_number("123456789")
+        .set_employee_last_name("Last")
+        .set_employee_first_name("First")
+        .set_schedule_date(schedule_date)
+        .set_workday_details(vec![
+            WorkDayDetailsBuilder::builder()
+                .set_work_type(ScheduleWorkType::WorkFromHome)
+                .set_start_time(start_time)
+                .set_end_time(end_time)
+                .build()?,
+            WorkDayDetailsBuilder::builder()
+                .set_work_type(ScheduleWorkType::WorkFromOffice)
+                .set_start_time(start_time)
+                .set_end_time(end_time)
+                .build()?,
+        ])
+        .build()])
+    .set_related_protocol_id(Some("1"))
+    .set_related_protocol_date(Some(related_protocol_date))
+    .build()];
+
+let response = ergani_client
+    .submit_weekly_schedule(company_weekly_schedules)
+    .await?;
 ```
 
 **Note:** You can submit weekly schedules for various employees across multiple company branches simultaneously.
 
 ---
 
-Full reference documentation is available at [https://ergani.withlogic.dev/](https://ergani.withlogic.dev/).
+Full reference documentation is available at [https://docs.rs/ergani/latest/ergani/](https://docs.rs/ergani/latest/ergani/).
 
 ## Glossary
 
