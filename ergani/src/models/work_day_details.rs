@@ -33,8 +33,8 @@ impl Serialize for WorkDayDetails {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::internal::tests::load_fixture_as_text;
     use crate::models::types::schedule_work_type::ScheduleWorkType;
-    use crate::tests::load_fixture_as_text;
 
     #[test]
     fn test_serialize_work_day_details() {

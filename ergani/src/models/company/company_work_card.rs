@@ -47,8 +47,8 @@ impl Serialize for CompanyWorkCard {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::internal::tests::load_fixture_as_text;
     use crate::models::types::work_card_movement_type::WorkCardMovementType;
-    use crate::tests::load_fixture_as_text;
     use chrono::{DateTime, NaiveDate, Utc};
 
     #[test]

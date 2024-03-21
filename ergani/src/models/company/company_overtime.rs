@@ -132,6 +132,7 @@ impl Serialize for CompanyOvertime {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::internal::tests::load_fixture_as_text;
     use crate::models::types::overtime_justification_type::OvertimeJustificationType;
     use crate::models::weekly_work_days::WeeklyWorkDays;
     use chrono::{DateTime, NaiveDate, Utc};
@@ -179,7 +180,7 @@ mod tests {
         };
 
         let serialized = serde_json::to_string(&company_overtime).unwrap();
-        let expected_text = crate::tests::load_fixture_as_text("company_overtime_fixture.json");
+        let expected_text = load_fixture_as_text("company_overtime_fixture.json");
         assert_eq!(serialized, expected_text);
     }
 }
