@@ -1,0 +1,18 @@
+{
+  "f_afm_ergodoti": "987654321",
+  "f_aa": "1",
+  "f_comments": "Σχόλια",
+  "Details": {
+    "CardDetails": [
+      {
+        "f_afm": "123456789",
+        "f_eponymo": "ΠΑΠΑΔΟΠΟΥΛΟΣ",
+        "f_onoma": "ΓΕΩΡΓΙΟΣ",
+        "f_type": "1",
+        "f_reference_date": "2021-01-01",
+        "f_date": "2014-11-28T12:00:00",
+        "f_aitiologia": ""
+      }
+    ]
+  }
+}

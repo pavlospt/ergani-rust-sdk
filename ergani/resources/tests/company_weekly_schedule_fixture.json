@@ -1,17 +1,17 @@
 {
   "f_aa_pararthmatos": 1,
   "f_rel_protocol": "123456",
-  "f_rel_date": "2014-11-28",
+  "f_rel_date": "28/11/2014",
   "f_comments": "Some comments",
-  "f_from_date": "2014-11-28",
-  "f_to_date": "2014-11-28",
+  "f_from_date": "28/11/2014",
+  "f_to_date": "28/11/2014",
   "Ergazomenoi": {
     "ErgazomenoiWTO": [
       {
         "f_afm": "123456789",
         "f_eponymo": "Doe",
         "f_onoma": "John",
-        "f_day": "Fri",
+        "f_day": "5",
         "ErgazomenosAnalytics": {
           "ErgazomenosWTOAnalytics": [
             {
@@ -31,7 +31,7 @@
         "f_afm": "987654321",
         "f_eponymo": "Doe",
         "f_onoma": "Jane",
-        "f_day": "Fri",
+        "f_day": "5",
         "ErgazomenosAnalytics": {
           "ErgazomenosWTOAnalytics": [
             {

@@ -30,9 +30,7 @@ pub(crate) async fn fetch_work_cards(ergani_client: &ErganiClient) -> anyhow::Re
 
         work_cards_tables.push(work_card_table);
 
-        for (card_index, card_detail) in
-        work_card.details.card_details.into_iter().enumerate()
-        {
+        for (card_index, card_detail) in work_card.details.card_details.into_iter().enumerate() {
             let mut card_detail_table = Table::new();
             card_detail_table
                 .load_preset(UTF8_FULL)
@@ -55,7 +53,10 @@ pub(crate) async fn fetch_work_cards(ergani_client: &ErganiClient) -> anyhow::Re
                 Cell::new(format!("{}:{current_card_index}", card_detail.f_eponymo)),
                 Cell::new(format!("{}:{current_card_index}", card_detail.f_onoma)),
                 Cell::new(format!("{}:{current_card_index}", card_detail.f_type)),
-                Cell::new(format!("{}:{current_card_index}", card_detail.f_reference_date)),
+                Cell::new(format!(
+                    "{}:{current_card_index}",
+                    card_detail.f_reference_date
+                )),
                 Cell::new(format!("{}:{current_card_index}", card_detail.f_date)),
                 Cell::new(format!("{}:{current_card_index}", card_detail.f_aitiologia)),
             ]);

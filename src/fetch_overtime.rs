@@ -8,7 +8,13 @@ pub(crate) async fn fetch_overtimes(ergani_client: &ErganiClient) -> anyhow::Res
 
     let mut overtime_tables: Vec<Table> = vec![];
 
-    for (index, overtime) in overtimes.overtimes.overtimes.overtime.into_iter().enumerate() {
+    for (index, overtime) in overtimes
+        .overtimes
+        .overtimes
+        .overtime
+        .into_iter()
+        .enumerate()
+    {
         let mut overtime_table = Table::new();
         overtime_table
             .load_preset(UTF8_FULL)
@@ -38,22 +44,31 @@ pub(crate) async fn fetch_overtimes(ergani_client: &ErganiClient) -> anyhow::Res
             Cell::new(format!("{}:{current_index}", overtime.f_rel_protocol)),
             Cell::new(format!("{}:{current_index}", overtime.f_rel_date)),
             Cell::new(format!("{}:{current_index}", overtime.f_ypiresia_sepe)),
-            Cell::new(format!("{}:{current_index}", overtime.f_ergodotikh_organwsh)),
+            Cell::new(format!(
+                "{}:{current_index}",
+                overtime.f_ergodotikh_organwsh
+            )),
             Cell::new(format!("{}:{current_index}", overtime.f_kad_kyria)),
             Cell::new(format!("{}:{current_index}", overtime.f_kad_deyt_1)),
             Cell::new(format!("{}:{current_index}", overtime.f_kad_deyt_2)),
             Cell::new(format!("{}:{current_index}", overtime.f_kad_deyt_3)),
             Cell::new(format!("{}:{current_index}", overtime.f_kad_deyt_4)),
             Cell::new(format!("{}:{current_index}", overtime.f_kad_pararthmatos)),
-            Cell::new(format!("{}:{current_index}", overtime.f_kallikratis_pararthmatos)),
+            Cell::new(format!(
+                "{}:{current_index}",
+                overtime.f_kallikratis_pararthmatos
+            )),
             Cell::new(format!("{}:{current_index}", overtime.f_comments)),
             Cell::new(format!("{}:{current_index}", overtime.f_afm_proswpoy)),
         ]);
 
         overtime_tables.push(overtime_table);
 
-        for (ergazomenos_index, overtime_ergazomenos) in
-        overtime.ergazomenoi.overtime_ergazomenos_date.into_iter().enumerate()
+        for (ergazomenos_index, overtime_ergazomenos) in overtime
+            .ergazomenoi
+            .overtime_ergazomenos_date
+            .into_iter()
+            .enumerate()
         {
             let mut overtime_ergazomenos_table = Table::new();
             overtime_ergazomenos_table
@@ -80,20 +95,62 @@ pub(crate) async fn fetch_overtimes(ergani_client: &ErganiClient) -> anyhow::Res
             let current_card_index = ergazomenos_index + 1;
 
             overtime_ergazomenos_table.add_row(vec![
-                Cell::new(format!("{}:{current_card_index}", overtime_ergazomenos.f_afm)),
-                Cell::new(format!("{}:{current_card_index}", overtime_ergazomenos.f_amka)),
-                Cell::new(format!("{}:{current_card_index}", overtime_ergazomenos.f_eponymo)),
-                Cell::new(format!("{}:{current_card_index}", overtime_ergazomenos.f_onoma)),
-                Cell::new(format!("{}:{current_card_index}", overtime_ergazomenos.f_date)),
-                Cell::new(format!("{}:{current_card_index}", overtime_ergazomenos.f_from)),
-                Cell::new(format!("{}:{current_card_index}", overtime_ergazomenos.f_to)),
-                Cell::new(format!("{}:{current_card_index}", overtime_ergazomenos.f_from_2)),
-                Cell::new(format!("{}:{current_card_index}", overtime_ergazomenos.f_to_2)),
-                Cell::new(format!("{}:{current_card_index}", overtime_ergazomenos.f_cancellation)),
-                Cell::new(format!("{}:{current_card_index}", overtime_ergazomenos.f_step)),
-                Cell::new(format!("{}:{current_card_index}", overtime_ergazomenos.f_reason)),
-                Cell::new(format!("{}:{current_card_index}", overtime_ergazomenos.f_weekdates)),
-                Cell::new(format!("{}:{current_card_index}", overtime_ergazomenos.f_asee)),
+                Cell::new(format!(
+                    "{}:{current_card_index}",
+                    overtime_ergazomenos.f_afm
+                )),
+                Cell::new(format!(
+                    "{}:{current_card_index}",
+                    overtime_ergazomenos.f_amka
+                )),
+                Cell::new(format!(
+                    "{}:{current_card_index}",
+                    overtime_ergazomenos.f_eponymo
+                )),
+                Cell::new(format!(
+                    "{}:{current_card_index}",
+                    overtime_ergazomenos.f_onoma
+                )),
+                Cell::new(format!(
+                    "{}:{current_card_index}",
+                    overtime_ergazomenos.f_date
+                )),
+                Cell::new(format!(
+                    "{}:{current_card_index}",
+                    overtime_ergazomenos.f_from
+                )),
+                Cell::new(format!(
+                    "{}:{current_card_index}",
+                    overtime_ergazomenos.f_to
+                )),
+                Cell::new(format!(
+                    "{}:{current_card_index}",
+                    overtime_ergazomenos.f_from_2
+                )),
+                Cell::new(format!(
+                    "{}:{current_card_index}",
+                    overtime_ergazomenos.f_to_2
+                )),
+                Cell::new(format!(
+                    "{}:{current_card_index}",
+                    overtime_ergazomenos.f_cancellation
+                )),
+                Cell::new(format!(
+                    "{}:{current_card_index}",
+                    overtime_ergazomenos.f_step
+                )),
+                Cell::new(format!(
+                    "{}:{current_card_index}",
+                    overtime_ergazomenos.f_reason
+                )),
+                Cell::new(format!(
+                    "{}:{current_card_index}",
+                    overtime_ergazomenos.f_weekdates
+                )),
+                Cell::new(format!(
+                    "{}:{current_card_index}",
+                    overtime_ergazomenos.f_asee
+                )),
             ]);
 
             overtime_tables.push(overtime_ergazomenos_table);

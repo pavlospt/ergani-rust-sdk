@@ -1,3 +1,4 @@
+use crate::internal::utils::format_date;
 use crate::models::employee::employee_weekly_schedule::EmployeeWeeklySchedule;
 use chrono::NaiveDate;
 use serde::ser::{Serialize, SerializeStruct, Serializer};
@@ -39,7 +40,7 @@ impl Serialize for CompanyWeeklySchedule {
         .to_string();
 
         let related_protocol_date = match &self.related_protocol_date {
-            Some(date) => date.to_string(),
+            Some(date) => format_date(Some(date)),
             None => "".to_string(),
         };
 
@@ -48,8 +49,8 @@ impl Serialize for CompanyWeeklySchedule {
             None => "".to_string(),
         };
 
-        let from_date = self.start_date.to_string();
-        let to_date = self.end_date.to_string();
+        let from_date = format_date(Some(&self.start_date));
+        let to_date = format_date(Some(&self.end_date));
 
         let employee_weekly_schedules = EmployeeWeeklySchedules {
             employee_schedules: self.employee_schedules.clone(),

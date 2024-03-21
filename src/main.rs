@@ -1,11 +1,11 @@
+mod fetch_daily_schedule;
+mod fetch_overtime;
 mod fetch_weekly_schedule;
+mod fetch_work_cards;
 mod submit_daily_schedule;
 mod submit_overtime;
 mod submit_weekly_schedule;
 mod submit_work_card;
-mod fetch_work_cards;
-mod fetch_daily_schedule;
-mod fetch_overtime;
 
 use anyhow::Result;
 use ergani::client::ErganiClient;
@@ -30,7 +30,7 @@ async fn main() -> Result<()> {
     // submit_daily_schedule::submit_daily_schedule(&client).await?;
     //
     // // Submit a weekly schedule
-    // submit_weekly_schedule::submit_weekly_schedule(&client).await?;
+    submit_weekly_schedule::submit_weekly_schedule(&client).await?;
 
     // Fetch work cards
     // fetch_work_cards::fetch_work_cards(&client).await?;
@@ -42,7 +42,7 @@ async fn main() -> Result<()> {
     // fetch_daily_schedule::fetch_daily_schedule(&client).await?;
 
     // Fetch the overtime
-    fetch_overtime::fetch_overtimes(&client).await?;
+    // fetch_overtime::fetch_overtimes(&client).await?;
 
     Ok(())
 }
