@@ -7,7 +7,8 @@ mod submit_overtime;
 mod submit_weekly_schedule;
 mod submit_work_card;
 
-use anyhow::Result;
+use anyhow::{Error, Result};
+use comfy_table::{Attribute, Cell, CellAlignment, Table};
 use ergani::client::ErganiClient;
 use std::env;
 
@@ -30,7 +31,7 @@ async fn main() -> Result<()> {
     // submit_daily_schedule::submit_daily_schedule(&client).await?;
     //
     // // Submit a weekly schedule
-    submit_weekly_schedule::submit_weekly_schedule(&client).await?;
+    let result = submit_weekly_schedule::submit_weekly_schedule(&client).await;
 
     // Fetch work cards
     // fetch_work_cards::fetch_work_cards(&client).await?;
@@ -44,5 +45,19 @@ async fn main() -> Result<()> {
     // Fetch the overtime
     // fetch_overtime::fetch_overtimes(&client).await?;
 
+    match result {
+        Err(e) => print_pretty_error(e),
+        _ => {}
+    }
+
     Ok(())
+}
+
+fn print_pretty_error(error: Error) {
+    let mut error_table = Table::new();
+    error_table.set_header(vec![Cell::new("Error")
+        .add_attribute(Attribute::Bold)
+        .set_alignment(CellAlignment::Center)]);
+    error_table.add_row(vec![Cell::new(&error.to_string())]);
+    println!("{}", error_table);
 }

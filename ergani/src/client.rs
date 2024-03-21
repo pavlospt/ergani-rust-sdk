@@ -245,13 +245,11 @@ impl ErganiClient {
             .build()?;
 
         let url = format!("{}{}", self.base_url, endpoint);
-        // let url = format!("{}{}", "http://localhost:8080", endpoint);
 
         let mut request_builder = client.request(method, url);
 
         if let Some(body) = body {
-            let response = request_builder.json(&body).send().await?;
-            return self._handle_response(response).await;
+            request_builder = request_builder.json(&body);
         }
 
         let response = request_builder.send().await?;
