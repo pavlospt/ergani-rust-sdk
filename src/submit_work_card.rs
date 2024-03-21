@@ -6,6 +6,7 @@ use ergani::models::types::late_declaration_justification_type::LateDeclarationJ
 use ergani::models::types::work_card_movement_type::WorkCardMovementType;
 use ergani::models::work_card_builder::WorkCardBuilder;
 
+#[allow(dead_code)]
 pub(crate) async fn submit_work_card(
     ergani_client: &ErganiClient,
 ) -> Result<Vec<SubmissionResponse>> {

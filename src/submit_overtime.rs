@@ -5,6 +5,7 @@ use ergani::models::overtime_builder::OvertimeBuilder;
 use ergani::models::types::overtime_justification_type::OvertimeJustificationType;
 use ergani::models::weekly_work_days::WeeklyWorkDays;
 
+#[allow(dead_code)]
 pub(crate) async fn submit_overtime(
     ergani_client: &ErganiClient,
 ) -> anyhow::Result<Vec<SubmissionResponse>> {
