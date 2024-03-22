@@ -1,5 +1,6 @@
 mod fetch_daily_schedule;
 mod fetch_overtime;
+mod fetch_submission_types;
 mod fetch_weekly_schedule;
 mod fetch_work_cards;
 mod submit_daily_schedule;
@@ -37,13 +38,16 @@ async fn main() -> Result<()> {
     // let result = fetch_work_cards::fetch_work_cards(&client).await;
 
     // Fetch the weekly schedule
-    let result = fetch_weekly_schedule::fetch_weekly_schedule(&client).await;
+    // let result = fetch_weekly_schedule::fetch_weekly_schedule(&client).await;
 
     // Fetch the daily schedule
     // let result = fetch_daily_schedule::fetch_daily_schedule(&client).await;
 
     // Fetch the overtime
     // let result = fetch_overtime::fetch_overtimes(&client).await;
+
+    // Fetch submission types
+    let result = fetch_submission_types::fetch_submission_types(&client).await;
 
     match result {
         Err(e) => pretty_print_error(e),
