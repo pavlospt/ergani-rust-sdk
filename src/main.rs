@@ -4,6 +4,7 @@ mod fetch_submission_types;
 mod fetch_weekly_schedule;
 mod fetch_work_cards;
 mod submit_daily_schedule;
+mod submit_employee_announcement;
 mod submit_overtime;
 mod submit_weekly_schedule;
 mod submit_work_card;
@@ -34,6 +35,9 @@ async fn main() -> Result<()> {
     // Submit a weekly schedule
     // let result = submit_weekly_schedule::submit_weekly_schedule(&client).await;
 
+    // Submit an employee announcement
+    let result = submit_employee_announcement::submit_employee_announcement(&client).await;
+
     // Fetch work cards
     // let result = fetch_work_cards::fetch_work_cards(&client).await;
 
@@ -47,7 +51,7 @@ async fn main() -> Result<()> {
     // let result = fetch_overtime::fetch_overtimes(&client).await;
 
     // Fetch submission types
-    let result = fetch_submission_types::fetch_submission_types(&client).await;
+    // let result = fetch_submission_types::fetch_submission_types(&client).await;
 
     match result {
         Err(e) => pretty_print_error(e),

@@ -3,14 +3,15 @@
 use crate::api_error::{APIError, ErganiError};
 use crate::auth::ErganiAuthentication;
 use crate::endpoint::{
-    DAILY_SCHEDULE_ENDPOINT, LOOKUP_SUBMISSIONS_ENDPOINT, OVERTIME_ENDPOINT, TRIAL_API_ENDPOINT,
-    WEEKLY_SCHEDULE_ENDPOINT, WORK_CARD_ENDPOINT,
+    DAILY_SCHEDULE_ENDPOINT, EMPLOYEE_ANNOUNCEMENT_ENDPOINT, LOOKUP_SUBMISSIONS_ENDPOINT,
+    OVERTIME_ENDPOINT, TRIAL_API_ENDPOINT, WEEKLY_SCHEDULE_ENDPOINT, WORK_CARD_ENDPOINT,
 };
 use crate::internal::deserializers::deserialize_datetime;
 use crate::models::company::company_daily_schedule::CompanyDailySchedule;
 use crate::models::company::company_overtime::CompanyOvertime;
 use crate::models::company::company_weekly_schedule::CompanyWeeklySchedule;
 use crate::models::company::company_work_card::CompanyWorkCard;
+use crate::models::employee::employee_announcement::{self, EmployeeAnnouncement};
 use crate::responses::day_schedule_response::DayScheduleResponseRoot;
 use crate::responses::lookup_response::{LookupResponse, LookupRoot};
 use crate::responses::overtime_response::OvertimeResponseRoot;
@@ -181,6 +182,29 @@ impl ErganiClient {
                 Some(request_payload),
             )
             .await?;
+
+        self._extract_submission_result(response).await
+    }
+
+    pub async fn submit_employee_announcements(
+        &self,
+        employee_announcements: Vec<EmployeeAnnouncement>,
+    ) -> Result<Vec<SubmissionResponse>> {
+        let params = serde_json::to_value(employee_announcements)?;
+        let request_payload = json!({
+            "AnaggeliesE3": {
+                "AnaggeliaE3": params
+            }
+        });
+        let response = self
+            ._request(
+                Method::POST,
+                EMPLOYEE_ANNOUNCEMENT_ENDPOINT,
+                Some(request_payload),
+            )
+            .await?;
+
+        dbg!(&response);
 
         self._extract_submission_result(response).await
     }
