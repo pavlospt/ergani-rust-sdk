@@ -24,6 +24,7 @@ use serde::de::DeserializeOwned;
 use serde::Deserialize;
 use serde_json::{json, Value};
 
+#[derive(Clone)]
 pub struct ErganiClient {
     authentication: ErganiAuthentication,
     base_url: String,

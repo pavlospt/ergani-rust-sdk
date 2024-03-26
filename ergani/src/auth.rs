@@ -6,6 +6,7 @@ use reqwest::header::HeaderMap;
 use serde_json::json;
 
 /// Authentication handler for the Ergani API
+#[derive(Clone)]
 pub struct ErganiAuthentication {
     pub access_token: String,
 }
