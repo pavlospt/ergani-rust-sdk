@@ -15,7 +15,7 @@ thiserror = "1.0.58"
 anyhow = "1.0.81"
 tokio = "1.36.0"
 serde = { version = "1.0.197", features = ["derive"] }
-serde_json = { version = "1.0.114", features = ["preserve_order"] }
+serde_json = { version = "1.0.115", features = ["preserve_order"] }
 chrono = "0.4.35"
 regex = "1.10.4"
 reqwest = { version = "0.12", features = ["json"] }
