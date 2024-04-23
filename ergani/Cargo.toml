@@ -19,5 +19,5 @@ serde_json = { version = "1.0.116", features = ["preserve_order"] }
 chrono = "0.4.38"
 regex = "1.10.4"
 reqwest = { version = "0.12", features = ["json"] }
-async-trait = "0.1.79"
+async-trait = "0.1.80"
 serde_derive = "1.0.197"
