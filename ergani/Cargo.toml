@@ -14,7 +14,7 @@ documentation = "https://docs.rs/ergani"
 thiserror = "1.0.59"
 anyhow = "1.0.82"
 tokio = "1.37.0"
-serde = { version = "1.0.198", features = ["derive"] }
+serde = { version = "1.0.199", features = ["derive"] }
 serde_json = { version = "1.0.116", features = ["preserve_order"] }
 chrono = "0.4.38"
 regex = "1.10.4"
