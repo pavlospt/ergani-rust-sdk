@@ -7,6 +7,9 @@ of [Ergani](https://www.gov.gr/en/ipiresies/ergasia-kai-asphalise/apozemioseis-k
 Ergani Rust SDK is a Rust flavour of the relevant [Ergani Python SDK](https://github.com/withlogicco/ergani-python-sdk)
 built by [LOGIC](https://withlogic.co/).
 
+If you like my work, consider buying me a coffee 😄 
+[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/pavlospt)
+
 ## Requirements
 
 Rust 1.76.0 or later
