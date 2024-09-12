@@ -1,10 +1,12 @@
 [package]
 name = "ergani-rust-sdk"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
+description = "Ergani Rust SDK"
+license = "MIT"
 
 [dependencies]
-ergani = { path = "ergani" }
+ergani = { path = "ergani", version = "0.1.14" }
 anyhow = "1.0"
 tokio = { version = "1.40.0", features = ["full"] }
 chrono = "0.4"
