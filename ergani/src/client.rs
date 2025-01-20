@@ -26,8 +26,8 @@ use serde_json::{json, Value};
 
 #[derive(Clone)]
 pub struct ErganiClient {
-    authentication: ErganiAuthentication,
     base_url: String,
+    http_client: reqwest::Client,
 }
 
 /// Represents a submission response from the Ergani API
@@ -59,9 +59,15 @@ impl ErganiClient {
             bail!(ergani_authentication.err().unwrap())
         }
 
+        let request_headers = ergani_authentication.unwrap().auth_headers();
+        let client = reqwest::Client::builder()
+            .default_headers(request_headers)
+            .user_agent("Ergani Rust Client")
+            .build()?;
+
         Ok(ErganiClient {
-            authentication: ergani_authentication.unwrap(),
             base_url: ergani_base_url,
+            http_client: client,
         })
     }
 
@@ -239,15 +245,9 @@ impl ErganiClient {
         endpoint: &str,
         body: Option<Value>,
     ) -> Result<Option<Response>> {
-        let request_headers = self.authentication.auth_headers();
-        let client = reqwest::Client::builder()
-            .default_headers(request_headers)
-            .user_agent("Ergani Rust Client")
-            .build()?;
-
         let url = format!("{}{}", self.base_url, endpoint);
 
-        let mut request_builder = client.request(method, url);
+        let mut request_builder = self.http_client.request(method, url);
 
         if let Some(body) = body {
             request_builder = request_builder.json(&body);
