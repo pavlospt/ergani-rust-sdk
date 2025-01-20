@@ -16,8 +16,9 @@ anyhow = "1.0"
 tokio = "1.43.0"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = { version = "1.0", features = ["preserve_order"] }
-chrono = "0.4.38"
+chrono = { version = "0.4.38", features = ["serde"] }
 regex = "1.11.1"
 reqwest = { version = "0.12", features = ["json"] }
 async-trait = "0.1.83"
 serde_derive = "1.0.197"
+bon = "3.3.2"
