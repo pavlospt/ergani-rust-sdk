@@ -1,10 +1,15 @@
 use comfy_table::presets::UTF8_FULL;
 use comfy_table::{Attribute, Cell, ContentArrangement, Table};
+use ergani::auth::authenticator::ErganiAuthenticationState;
 use ergani::client::ErganiClient;
+use anyhow::Result;
 
 #[allow(dead_code)]
-pub(crate) async fn fetch_overtimes(ergani_client: &ErganiClient) -> anyhow::Result<()> {
-    let overtimes = ergani_client.fetch_overtimes().await?;
+pub(crate) async fn fetch_overtimes(
+    ergani_client: &ErganiClient,
+    auth_state: ErganiAuthenticationState,
+) -> Result<()> {
+    let overtimes = ergani_client.fetch_overtimes(auth_state).await?;
 
     let mut overtime_tables: Vec<Table> = vec![];
 
@@ -31,20 +36,20 @@ pub(crate) async fn fetch_overtimes(ergani_client: &ErganiClient) -> anyhow::Res
             ]);
 
         overtime_table.add_row(vec![
-            Cell::new(format!("{}", overtime.f_aa_pararthmatos)),
-            Cell::new(format!("{}", overtime.f_rel_protocol)),
-            Cell::new(format!("{}", overtime.f_rel_date)),
-            Cell::new(format!("{}", overtime.f_ypiresia_sepe)),
-            Cell::new(format!("{}", overtime.f_ergodotikh_organwsh)),
-            Cell::new(format!("{}", overtime.f_kad_kyria)),
-            Cell::new(format!("{}", overtime.f_kad_deyt_1)),
-            Cell::new(format!("{}", overtime.f_kad_deyt_2)),
-            Cell::new(format!("{}", overtime.f_kad_deyt_3)),
-            Cell::new(format!("{}", overtime.f_kad_deyt_4)),
-            Cell::new(format!("{}", overtime.f_kad_pararthmatos)),
-            Cell::new(format!("{}", overtime.f_kallikratis_pararthmatos)),
-            Cell::new(format!("{}", overtime.f_comments)),
-            Cell::new(format!("{}", overtime.f_afm_proswpoy)),
+            Cell::new(overtime.f_aa_pararthmatos.to_string()),
+            Cell::new(overtime.f_rel_protocol.to_string()),
+            Cell::new(overtime.f_rel_date.to_string()),
+            Cell::new(overtime.f_ypiresia_sepe.to_string()),
+            Cell::new(overtime.f_ergodotikh_organwsh.to_string()),
+            Cell::new(overtime.f_kad_kyria.to_string()),
+            Cell::new(overtime.f_kad_deyt_1.to_string()),
+            Cell::new(overtime.f_kad_deyt_2.to_string()),
+            Cell::new(overtime.f_kad_deyt_3.to_string()),
+            Cell::new(overtime.f_kad_deyt_4.to_string()),
+            Cell::new(overtime.f_kad_pararthmatos.to_string()),
+            Cell::new(overtime.f_kallikratis_pararthmatos.to_string()),
+            Cell::new(overtime.f_comments.to_string()),
+            Cell::new(overtime.f_afm_proswpoy.to_string()),
         ]);
 
         overtime_tables.push(overtime_table);
@@ -72,20 +77,20 @@ pub(crate) async fn fetch_overtimes(ergani_client: &ErganiClient) -> anyhow::Res
 
         for overtime_ergazomenos in overtime.ergazomenoi.overtime_ergazomenos_date {
             overtime_ergazomenos_table.add_row(vec![
-                Cell::new(format!("{}", overtime_ergazomenos.f_afm)),
-                Cell::new(format!("{}", overtime_ergazomenos.f_amka)),
-                Cell::new(format!("{}", overtime_ergazomenos.f_eponymo)),
-                Cell::new(format!("{}", overtime_ergazomenos.f_onoma)),
-                Cell::new(format!("{}", overtime_ergazomenos.f_date)),
-                Cell::new(format!("{}", overtime_ergazomenos.f_from)),
-                Cell::new(format!("{}", overtime_ergazomenos.f_to)),
-                Cell::new(format!("{}", overtime_ergazomenos.f_from_2)),
-                Cell::new(format!("{}", overtime_ergazomenos.f_to_2)),
-                Cell::new(format!("{}", overtime_ergazomenos.f_cancellation)),
-                Cell::new(format!("{}", overtime_ergazomenos.f_step)),
-                Cell::new(format!("{}", overtime_ergazomenos.f_reason)),
-                Cell::new(format!("{}", overtime_ergazomenos.f_weekdates)),
-                Cell::new(format!("{}", overtime_ergazomenos.f_asee)),
+                Cell::new(overtime_ergazomenos.f_afm.to_string()),
+                Cell::new(overtime_ergazomenos.f_amka.to_string()),
+                Cell::new(overtime_ergazomenos.f_eponymo.to_string()),
+                Cell::new(overtime_ergazomenos.f_onoma.to_string()),
+                Cell::new(overtime_ergazomenos.f_date.to_string()),
+                Cell::new(overtime_ergazomenos.f_from.to_string()),
+                Cell::new(overtime_ergazomenos.f_to.to_string()),
+                Cell::new(overtime_ergazomenos.f_from_2.to_string()),
+                Cell::new(overtime_ergazomenos.f_to_2.to_string()),
+                Cell::new(overtime_ergazomenos.f_cancellation.to_string()),
+                Cell::new(overtime_ergazomenos.f_step.to_string()),
+                Cell::new(overtime_ergazomenos.f_reason.to_string()),
+                Cell::new(overtime_ergazomenos.f_weekdates.to_string()),
+                Cell::new(overtime_ergazomenos.f_asee.to_string()),
             ]);
         }
 

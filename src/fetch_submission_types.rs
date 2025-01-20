@@ -1,14 +1,19 @@
+use anyhow::Result;
 use comfy_table::presets::UTF8_FULL;
 use comfy_table::{Attribute, Cell, ContentArrangement, Table};
+use ergani::auth::authenticator::ErganiAuthenticationState;
 use ergani::client::ErganiClient;
 
 #[allow(dead_code)]
-pub(crate) async fn fetch_submission_types(ergani_client: &ErganiClient) -> anyhow::Result<()> {
-    let submission_types = ergani_client.fetch_submissions().await?;
+pub(crate) async fn fetch_submission_types(
+    ergani_client: &ErganiClient,
+    auth_state: ErganiAuthenticationState,
+) -> Result<()> {
+    let submission_types = ergani_client.fetch_submissions(auth_state).await?;
 
     let mut submission_type_tables: Vec<Table> = vec![];
-
     let mut submission_type_table = Table::new();
+
     submission_type_table
         .load_preset(UTF8_FULL)
         .set_content_arrangement(ContentArrangement::Dynamic)
@@ -21,8 +26,8 @@ pub(crate) async fn fetch_submission_types(ergani_client: &ErganiClient) -> anyh
     for submission_type in submission_types {
         submission_type_table.add_row(vec![
             Cell::new(format!("{}", submission_type.id)),
-            Cell::new(format!("{}", submission_type.code)),
-            Cell::new(format!("{}", submission_type.description)),
+            Cell::new(submission_type.code.to_string()),
+            Cell::new(submission_type.description.to_string()),
         ]);
     }
 

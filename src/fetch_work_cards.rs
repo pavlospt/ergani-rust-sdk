@@ -1,10 +1,15 @@
+use anyhow::Result;
 use comfy_table::presets::UTF8_FULL;
 use comfy_table::{Attribute, Cell, ContentArrangement, Table};
+use ergani::auth::authenticator::ErganiAuthenticationState;
 use ergani::client::ErganiClient;
 
 #[allow(dead_code)]
-pub(crate) async fn fetch_work_cards(ergani_client: &ErganiClient) -> anyhow::Result<()> {
-    let work_cards = ergani_client.fetch_work_cards().await?;
+pub(crate) async fn fetch_work_cards(
+    ergani_client: &ErganiClient,
+    auth_state: ErganiAuthenticationState,
+) -> Result<()> {
+    let work_cards = ergani_client.fetch_work_cards(auth_state).await?;
 
     let mut work_cards_tables: Vec<Table> = vec![];
 
@@ -20,9 +25,9 @@ pub(crate) async fn fetch_work_cards(ergani_client: &ErganiClient) -> anyhow::Re
             ]);
 
         work_card_table.add_row(vec![
-            Cell::new(format!("{}", work_card.f_afm_ergodoti)),
-            Cell::new(format!("{}", work_card.f_aa)),
-            Cell::new(format!("{}", work_card.f_comments)),
+            Cell::new(work_card.f_afm_ergodoti.to_string()),
+            Cell::new(work_card.f_aa.to_string()),
+            Cell::new(work_card.f_comments.to_string()),
         ]);
 
         work_cards_tables.push(work_card_table);
@@ -43,13 +48,13 @@ pub(crate) async fn fetch_work_cards(ergani_client: &ErganiClient) -> anyhow::Re
 
         for card_detail in work_card.details.card_details {
             card_detail_table.add_row(vec![
-                Cell::new(format!("{}", card_detail.f_afm)),
-                Cell::new(format!("{}", card_detail.f_eponymo)),
-                Cell::new(format!("{}", card_detail.f_onoma)),
-                Cell::new(format!("{}", card_detail.f_type)),
-                Cell::new(format!("{}", card_detail.f_reference_date)),
-                Cell::new(format!("{}", card_detail.f_date)),
-                Cell::new(format!("{}", card_detail.f_aitiologia)),
+                Cell::new(card_detail.f_afm.to_string()),
+                Cell::new(card_detail.f_eponymo.to_string()),
+                Cell::new(card_detail.f_onoma.to_string()),
+                Cell::new(card_detail.f_type.to_string()),
+                Cell::new(card_detail.f_reference_date.to_string()),
+                Cell::new(card_detail.f_date.to_string()),
+                Cell::new(card_detail.f_aitiologia.to_string()),
             ]);
         }
 

@@ -8,7 +8,7 @@ pub struct ErganiError {
 
 impl ErganiError {
     pub fn message(&self) -> &str {
-        &self.message.trim()
+        self.message.trim()
     }
 }
 

@@ -10,17 +10,36 @@ mod submit_work_card;
 
 use anyhow::{Error, Result};
 use comfy_table::{Attribute, Cell, CellAlignment, Table};
-use ergani::client::ErganiClient;
+use ergani::{
+    auth::{authenticator::ErganiAuthenticator, login_payload::LoginPayload},
+    client::ErganiClient,
+};
 use std::env;
 
 #[tokio::main]
 async fn main() -> Result<()> {
+    tracing_subscriber::fmt()
+        .with_thread_names(true)
+        .with_line_number(true)
+        .init();
+
     let ergani_username = env::var("ERGANI_USERNAME")?;
     let ergani_password = env::var("ERGANI_PASSWORD")?;
     let ergani_base_url = env::var("ERGANI_BASE_URL")
         .unwrap_or("https://trialeservices.yeka.gr/WebServicesAPI/api".to_string());
 
-    let client = ErganiClient::new(ergani_username, ergani_password, Some(ergani_base_url)).await?;
+    let login_payload = LoginPayload::builder()
+        .username(ergani_username)
+        .password(ergani_password)
+        .build();
+
+    let ergani_authenticator = ErganiAuthenticator::builder()
+        .base_url(ergani_base_url.to_string())
+        .build();
+
+    let auth_state = ergani_authenticator.login(login_payload).await?;
+
+    let client = ErganiClient::init(ergani_base_url);
 
     // Submit a work card
     // let result = submit_work_card::submit_work_card(&client).await;
@@ -47,11 +66,10 @@ async fn main() -> Result<()> {
     // let result = fetch_overtime::fetch_overtimes(&client).await;
 
     // Fetch submission types
-    let result = fetch_submission_types::fetch_submission_types(&client).await;
+    let result = fetch_submission_types::fetch_submission_types(&client, auth_state).await;
 
-    match result {
-        Err(e) => pretty_print_error(e),
-        _ => {}
+    if let Err(e) = result {
+        pretty_print_error(e)
     }
 
     Ok(())
@@ -62,6 +80,6 @@ fn pretty_print_error(error: Error) {
     error_table.set_header(vec![Cell::new("Error")
         .add_attribute(Attribute::Bold)
         .set_alignment(CellAlignment::Center)]);
-    error_table.add_row(vec![Cell::new(&error.to_string())]);
+    error_table.add_row(vec![Cell::new(error.to_string())]);
     println!("{}", error_table);
 }
