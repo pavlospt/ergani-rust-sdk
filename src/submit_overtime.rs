@@ -1,14 +1,16 @@
 use chrono::{DateTime, NaiveDate, Utc};
+use ergani::auth::authenticator::ErganiAuthenticationState;
 use ergani::client::{ErganiClient, SubmissionResponse};
 use ergani::models::company::company_overtime_builder::CompanyOvertimeBuilder;
 use ergani::models::overtime_builder::OvertimeBuilder;
 use ergani::models::types::overtime_justification_type::OvertimeJustificationType;
 use ergani::models::weekly_work_days::WeeklyWorkDays;
-
+use anyhow::Result;
 #[allow(dead_code)]
 pub(crate) async fn submit_overtime(
     ergani_client: &ErganiClient,
-) -> anyhow::Result<Vec<SubmissionResponse>> {
+    auth_state: ErganiAuthenticationState,
+) -> Result<Vec<SubmissionResponse>> {
     let start_time = "2024-03-01T12:00:00Z".parse::<DateTime<Utc>>().unwrap();
     let end_time = "2024-03-01T20:00:00Z".parse::<DateTime<Utc>>().unwrap();
     let related_protocol_date = NaiveDate::from_ymd_opt(2024, 3, 1).unwrap();
@@ -47,7 +49,9 @@ pub(crate) async fn submit_overtime(
         .set_comments(Some("Σχόλια"))
         .build()];
 
-    let response = ergani_client.submit_overtime(company_overtimes).await?;
+    let response = ergani_client
+        .submit_overtime(company_overtimes, auth_state)
+        .await?;
 
     Ok(response)
 }

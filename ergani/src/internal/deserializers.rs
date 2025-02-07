@@ -8,7 +8,7 @@ where
 {
     struct DateTimeVisitor;
 
-    impl<'de> Visitor<'de> for DateTimeVisitor {
+    impl Visitor<'_> for DateTimeVisitor {
         type Value = DateTime<Utc>;
 
         fn expecting(&self, formatter: &mut std::fmt::Formatter) -> std::fmt::Result {

@@ -1,5 +1,5 @@
 pub mod api_error;
-mod auth;
+pub mod auth;
 pub mod client;
 mod endpoint;
 mod internal;

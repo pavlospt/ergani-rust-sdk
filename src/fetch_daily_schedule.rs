@@ -1,10 +1,15 @@
+use anyhow::Result;
 use comfy_table::presets::UTF8_FULL;
 use comfy_table::{Attribute, Cell, ContentArrangement, Table};
+use ergani::auth::authenticator::ErganiAuthenticationState;
 use ergani::client::ErganiClient;
 
 #[allow(dead_code)]
-pub(crate) async fn fetch_daily_schedule(ergani_client: &ErganiClient) -> anyhow::Result<()> {
-    let day_schedule = ergani_client.fetch_daily_schedule().await?;
+pub(crate) async fn fetch_daily_schedule(
+    ergani_client: &ErganiClient,
+    auth_state: ErganiAuthenticationState,
+) -> Result<()> {
+    let day_schedule = ergani_client.fetch_daily_schedule(auth_state).await?;
 
     let mut daily_schedule_tables: Vec<Table> = vec![];
 
@@ -23,12 +28,12 @@ pub(crate) async fn fetch_daily_schedule(ergani_client: &ErganiClient) -> anyhow
             ]);
 
         wto_table.add_row(vec![
-            Cell::new(format!("{}", wto.f_aa_pararthmatos)),
-            Cell::new(format!("{}", wto.f_rel_protocol)),
-            Cell::new(format!("{}", wto.f_rel_date)),
-            Cell::new(format!("{}", wto.f_comments)),
-            Cell::new(format!("{}", wto.f_from_date)),
-            Cell::new(format!("{}", wto.f_to_date)),
+            Cell::new(wto.f_aa_pararthmatos.to_string()),
+            Cell::new(wto.f_rel_protocol.to_string()),
+            Cell::new(wto.f_rel_date.to_string()),
+            Cell::new(wto.f_comments.to_string()),
+            Cell::new(wto.f_from_date.to_string()),
+            Cell::new(wto.f_to_date.to_string()),
         ]);
 
         daily_schedule_tables.push(wto_table);
@@ -45,9 +50,9 @@ pub(crate) async fn fetch_daily_schedule(ergani_client: &ErganiClient) -> anyhow
                 ]);
 
             ergazomenos_table.add_row(vec![
-                Cell::new(format!("{}", ergazomenos.f_afm)),
-                Cell::new(format!("{}", ergazomenos.f_eponymo)),
-                Cell::new(format!("{}", ergazomenos.f_onoma)),
+                Cell::new(ergazomenos.f_afm.to_string()),
+                Cell::new(ergazomenos.f_eponymo.to_string()),
+                Cell::new(ergazomenos.f_onoma.to_string()),
             ]);
 
             daily_schedule_tables.push(ergazomenos_table);
@@ -64,9 +69,9 @@ pub(crate) async fn fetch_daily_schedule(ergani_client: &ErganiClient) -> anyhow
 
             for ergazomenos_analytic in ergazomenos.ergazomenos_analytics.ergazomenos_wtoanalytics {
                 ergazomenos_analytic_table.add_row(vec![
-                    Cell::new(format!("{}", ergazomenos_analytic.f_type)),
-                    Cell::new(format!("{}", ergazomenos_analytic.f_from)),
-                    Cell::new(format!("{}", ergazomenos_analytic.f_to)),
+                    Cell::new(ergazomenos_analytic.f_type.to_string()),
+                    Cell::new(ergazomenos_analytic.f_from.to_string()),
+                    Cell::new(ergazomenos_analytic.f_to.to_string()),
                 ]);
             }
 

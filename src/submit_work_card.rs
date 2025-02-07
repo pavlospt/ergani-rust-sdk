@@ -1,6 +1,6 @@
 use anyhow::Result;
 use chrono::{NaiveDate, NaiveDateTime};
-
+use ergani::auth::authenticator::ErganiAuthenticationState;
 use ergani::client::{ErganiClient, SubmissionResponse};
 use ergani::models::company::company_work_card_builder::CompanyWorkCardBuilder;
 use ergani::models::types::late_declaration_justification_type::LateDeclarationJustificationType;
@@ -10,6 +10,7 @@ use ergani::models::work_card_builder::WorkCardBuilder;
 #[allow(dead_code)]
 pub(crate) async fn submit_work_card(
     ergani_client: &ErganiClient,
+    auth_state: ErganiAuthenticationState,
 ) -> Result<Vec<SubmissionResponse>> {
     let work_card_movement_datetime =
         NaiveDateTime::parse_from_str("2024-03-20 10:00", "%Y-%m-%d %H:%M")
@@ -33,7 +34,9 @@ pub(crate) async fn submit_work_card(
             .build()?])
         .build()];
 
-    let response = ergani_client.submit_work_card(work_card).await?;
+    let response = ergani_client
+        .submit_work_card(work_card, auth_state)
+        .await?;
 
     response.iter().for_each(|r| {
         println!("{:?}", r);
