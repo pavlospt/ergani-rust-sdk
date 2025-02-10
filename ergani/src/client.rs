@@ -9,6 +9,7 @@ use crate::endpoint::{
     DAILY_SCHEDULE_ENDPOINT, LOOKUP_SUBMISSIONS_ENDPOINT, OVERTIME_ENDPOINT, TRIAL_API_ENDPOINT,
     WEEKLY_SCHEDULE_ENDPOINT, WORK_CARD_ENDPOINT,
 };
+use crate::ergani_fetch_response::ErganiFetchResponse;
 use crate::internal::deserializers::deserialize_datetime;
 use crate::models::company::company_daily_schedule::CompanyDailySchedule;
 use crate::models::company::company_overtime::CompanyOvertime;
@@ -229,7 +230,7 @@ impl ErganiClient {
     pub async fn fetch_submissions(
         &self,
         auth_state: ErganiAuthenticationState,
-    ) -> Result<LookupRoot> {
+    ) -> Result<ErganiFetchResponse<LookupRoot>> {
         let payload = ErganiRequestPayload::builder()
             .method(Method::GET)
             .endpoint(LOOKUP_SUBMISSIONS_ENDPOINT.to_string())
@@ -252,7 +253,7 @@ impl ErganiClient {
     pub async fn fetch_weekly_schedule(
         &self,
         auth_state: ErganiAuthenticationState,
-    ) -> Result<WeekScheduleResponseRoot> {
+    ) -> Result<ErganiFetchResponse<WeekScheduleResponseRoot>> {
         let payload = ErganiRequestPayload::builder()
             .method(Method::GET)
             .endpoint(WEEKLY_SCHEDULE_ENDPOINT.to_string())
@@ -274,7 +275,7 @@ impl ErganiClient {
     pub async fn fetch_daily_schedule(
         &self,
         auth_state: ErganiAuthenticationState,
-    ) -> Result<DayScheduleResponseRoot> {
+    ) -> Result<ErganiFetchResponse<DayScheduleResponseRoot>> {
         let payload = ErganiRequestPayload::builder()
             .method(Method::GET)
             .endpoint(DAILY_SCHEDULE_ENDPOINT.to_string())
@@ -296,7 +297,7 @@ impl ErganiClient {
     pub async fn fetch_work_cards(
         &self,
         auth_state: ErganiAuthenticationState,
-    ) -> Result<WorkCardResponseRoot> {
+    ) -> Result<ErganiFetchResponse<WorkCardResponseRoot>> {
         let payload = ErganiRequestPayload::builder()
             .method(Method::GET)
             .endpoint(WORK_CARD_ENDPOINT.to_string())
@@ -318,7 +319,7 @@ impl ErganiClient {
     pub async fn fetch_overtimes(
         &self,
         auth_state: ErganiAuthenticationState,
-    ) -> Result<OvertimeResponseRoot> {
+    ) -> Result<ErganiFetchResponse<OvertimeResponseRoot>> {
         let payload = ErganiRequestPayload::builder()
             .method(Method::GET)
             .endpoint(OVERTIME_ENDPOINT.to_string())
@@ -497,9 +498,12 @@ impl ErganiClient {
         &self,
         response: Option<Response>,
         auth_state: ErganiAuthenticationState,
-    ) -> Result<T> {
+    ) -> Result<ErganiFetchResponse<T>> {
         let response: T = response.unwrap().json().await?;
 
-        Ok(response)
+        Ok(ErganiFetchResponse::builder()
+            .response(response)
+            .auth_state(auth_state)
+            .build())
     }
 }

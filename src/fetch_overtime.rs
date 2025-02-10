@@ -13,7 +13,7 @@ pub(crate) async fn fetch_overtimes(
 
     let mut overtime_tables: Vec<Table> = vec![];
 
-    for overtime in overtimes.overtimes.overtimes.overtime {
+    for overtime in overtimes.response().unwrap().overtimes.overtimes.overtime.iter() {
         let mut overtime_table = Table::new();
         overtime_table
             .load_preset(UTF8_FULL)
@@ -75,7 +75,7 @@ pub(crate) async fn fetch_overtimes(
                 Cell::new("ASEE").add_attribute(Attribute::Bold),
             ]);
 
-        for overtime_ergazomenos in overtime.ergazomenoi.overtime_ergazomenos_date {
+        for overtime_ergazomenos in overtime.ergazomenoi.overtime_ergazomenos_date.iter() {
             overtime_ergazomenos_table.add_row(vec![
                 Cell::new(overtime_ergazomenos.f_afm.to_string()),
                 Cell::new(overtime_ergazomenos.f_amka.to_string()),

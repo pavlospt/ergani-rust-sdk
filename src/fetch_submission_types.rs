@@ -23,7 +23,7 @@ pub(crate) async fn fetch_submission_types(
             Cell::new("Submission Description").add_attribute(Attribute::Bold),
         ]);
 
-    for submission_type in submission_types {
+    for submission_type in submission_types.response().unwrap().iter() {
         submission_type_table.add_row(vec![
             Cell::new(format!("{}", submission_type.id)),
             Cell::new(submission_type.code.to_string()),

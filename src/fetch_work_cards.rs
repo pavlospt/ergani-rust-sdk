@@ -13,7 +13,7 @@ pub(crate) async fn fetch_work_cards(
 
     let mut work_cards_tables: Vec<Table> = vec![];
 
-    for work_card in work_cards.work_cards.cards.card {
+    for work_card in work_cards.response().unwrap().work_cards.cards.card.iter() {
         let mut work_card_table = Table::new();
         work_card_table
             .load_preset(UTF8_FULL)
@@ -46,7 +46,7 @@ pub(crate) async fn fetch_work_cards(
                 Cell::new("Aitiologia").add_attribute(Attribute::Bold),
             ]);
 
-        for card_detail in work_card.details.card_details {
+        for card_detail in work_card.details.card_details.iter() {
             card_detail_table.add_row(vec![
                 Cell::new(card_detail.f_afm.to_string()),
                 Cell::new(card_detail.f_eponymo.to_string()),

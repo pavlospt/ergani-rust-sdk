@@ -42,28 +42,28 @@ async fn main() -> Result<()> {
     let client = ErganiClient::init(ergani_base_url);
 
     // Submit a work card
-    // let result = submit_work_card::submit_work_card(&client).await;
+    // let result = submit_work_card::submit_work_card(&client, auth_state).await;
 
     // Submit an overtime
-    // let result = submit_overtime::submit_overtime(&client).await;
+    // let result = submit_overtime::submit_overtime(&client, auth_state).await;
 
     // Submit a daily schedule
-    // let result = submit_daily_schedule::submit_daily_schedule(&client).await;
+    // let result = submit_daily_schedule::submit_daily_schedule(&client, auth_state).await;
 
     // Submit a weekly schedule
-    // let result = submit_weekly_schedule::submit_weekly_schedule(&client).await;
+    // let result = submit_weekly_schedule::submit_weekly_schedule(&client, auth_state).await;
 
     // Fetch work cards
-    // let result = fetch_work_cards::fetch_work_cards(&client).await;
+    // let result = fetch_work_cards::fetch_work_cards(&client, auth_state).await;
 
     // Fetch the weekly schedule
-    // let result = fetch_weekly_schedule::fetch_weekly_schedule(&client).await;
+    // let result = fetch_weekly_schedule::fetch_weekly_schedule(&client, auth_state).await;
 
     // Fetch the daily schedule
-    // let result = fetch_daily_schedule::fetch_daily_schedule(&client).await;
+    // let result = fetch_daily_schedule::fetch_daily_schedule(&client, auth_state).await;
 
     // Fetch the overtime
-    // let result = fetch_overtime::fetch_overtimes(&client).await;
+    // let result = fetch_overtime::fetch_overtimes(&client, auth_state).await;
 
     // Fetch submission types
     let result = fetch_submission_types::fetch_submission_types(&client, auth_state).await;

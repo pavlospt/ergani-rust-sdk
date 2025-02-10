@@ -13,7 +13,7 @@ pub(crate) async fn fetch_weekly_schedule(
 
     let mut weekly_schedule_tables: Vec<Table> = vec![];
 
-    for wto in week_schedule.week_schedule.wtos.wto {
+    for wto in week_schedule.response().unwrap().week_schedule.wtos.wto.iter() {
         let mut wto_table = Table::new();
         wto_table
             .load_preset(UTF8_FULL)
@@ -34,7 +34,7 @@ pub(crate) async fn fetch_weekly_schedule(
 
         weekly_schedule_tables.push(wto_table);
 
-        for ergazomenos in wto.ergazomenoi.ergazomenoi_wto {
+        for ergazomenos in wto.ergazomenoi.ergazomenoi_wto.iter() {
             let mut ergazomenos_table = Table::new();
             ergazomenos_table
                 .load_preset(UTF8_FULL)
@@ -63,7 +63,7 @@ pub(crate) async fn fetch_weekly_schedule(
                     Cell::new("To").add_attribute(Attribute::Bold),
                 ]);
 
-            for ergazomenos_analytic in ergazomenos.ergazomenos_analytics.ergazomenos_wtoanalytics {
+            for ergazomenos_analytic in ergazomenos.ergazomenos_analytics.ergazomenos_wtoanalytics.iter() {
                 ergazomenos_analytic_table.add_row(vec![
                     Cell::new(ergazomenos_analytic.f_type.to_string()),
                     Cell::new(ergazomenos_analytic.f_from.to_string()),

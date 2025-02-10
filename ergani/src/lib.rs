@@ -5,3 +5,4 @@ mod endpoint;
 mod internal;
 pub mod models;
 mod responses;
+mod ergani_fetch_response;
