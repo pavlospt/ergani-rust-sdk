@@ -8,7 +8,7 @@ license = "MIT"
 [dependencies]
 ergani = { path = "ergani", version = "0.2.1" }
 anyhow = "1.0"
-tokio = { version = "1.43.0", features = ["full"] }
+tokio = { version = "1.44.1", features = ["full"] }
 chrono = "0.4"
 comfy-table = "7.1.4"
 tracing = "0.1.41"
