@@ -13,7 +13,7 @@ documentation = "https://docs.rs/ergani"
 [dependencies]
 thiserror = "2.0"
 anyhow = "1.0"
-tokio = "1.44.2"
+tokio = "1.45.1"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = { version = "1.0", features = ["preserve_order"] }
 chrono = { version = "0.4.40", features = ["serde"] }
