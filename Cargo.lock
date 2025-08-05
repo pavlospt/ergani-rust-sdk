@@ -99,9 +99,9 @@ checksum = "8f68f53c83ab957f72c32642f3868eec03eb974d1fb82e453128456482613d36"
 
 [[package]]
 name = "bon"
-version = "3.6.3"
+version = "3.6.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ced38439e7a86a4761f7f7d5ded5ff009135939ecb464a24452eaa4c1696af7d"
+checksum = "33d9ef19ae5263a138da9a86871eca537478ab0332a7770bac7e3f08b801f89f"
 dependencies = [
  "bon-macros",
  "rustversion",
@@ -109,9 +109,9 @@ dependencies = [
 
 [[package]]
 name = "bon-macros"
-version = "3.6.3"
+version = "3.6.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0ce61d2d3844c6b8d31b2353d9f66cf5e632b3e9549583fe3cac2f4f6136725e"
+checksum = "577ae008f2ca11ca7641bd44601002ee5ab49ef0af64846ce1ab6057218a5cc1"
 dependencies = [
  "darling",
  "ident_case",
@@ -215,9 +215,9 @@ dependencies = [
 
 [[package]]
 name = "darling"
-version = "0.20.10"
+version = "0.21.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6f63b86c8a8826a49b8c21f08a2d07338eec8d900540f8630dc76284be802989"
+checksum = "d6b136475da5ef7b6ac596c0e956e37bad51b85b987ff3d5e230e964936736b2"
 dependencies = [
  "darling_core",
  "darling_macro",
@@ -225,9 +225,9 @@ dependencies = [
 
 [[package]]
 name = "darling_core"
-version = "0.20.10"
+version = "0.21.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "95133861a8032aaea082871032f5815eb9e98cef03fa916ab4500513994df9e5"
+checksum = "b44ad32f92b75fb438b04b68547e521a548be8acc339a6dacc4a7121488f53e6"
 dependencies = [
  "fnv",
  "ident_case",
@@ -239,9 +239,9 @@ dependencies = [
 
 [[package]]
 name = "darling_macro"
-version = "0.20.10"
+version = "0.21.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d336a2a514f6ccccaa3e09b02d41d35330c07ddf03a62165fcec10bb561c7806"
+checksum = "2b5be8a7a562d315a5b92a630c30cec6bcf663e6673f00fbb69cca66a6f521b9"
 dependencies = [
  "darling_core",
  "quote",
